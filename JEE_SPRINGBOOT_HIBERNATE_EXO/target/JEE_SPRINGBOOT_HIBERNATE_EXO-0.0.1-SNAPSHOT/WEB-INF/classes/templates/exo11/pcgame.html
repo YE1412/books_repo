@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!-- ************************************************************************** -->
+<!-- ************************************************************************** -->
+<!-- ****************************** pcgame.html ******************************* -->
+<!-- ************************************************************************** -->
+<!-- ************************************************************************** -->
+<!--  Filename : pcgame.html                                                    -->
+<!-- ************************************************************************** -->
+<!--  Creation Date : Jan 30, 2024, 2:12:34 PM                                  -->
+<!-- ************************************************************************** -->
+<!--  Last modified : Jan 30, 2024, 2:12:34 PM                                  -->
+<!-- ************************************************************************** -->
+<!--  Created by : Mad <coding>                                                 -->
+<!-- ************************************************************************** -->
+<!-- ************************************************************************** -->
+<!-- ************************************************************************** -->
+<!--                                                                            -->
+<!--                    :::::   ::::::            ::::::::           :::::::    -->
+<!--                  :+:   :+:+     +:+        :+:     :+:        :+:    :+:   -->
+<!--                #:#     +:+     +:+       +:+      +:+       +:+       :+:  -->
+<!--              +#+      #+#     +:+      +:+:+:+:+:+:+      +:+        :+:   -->
+<!--            +#+       #:#     #+#     #+#        :+:     +:+         :+:    -->
+<!--          +#+        #+#     #:#    +#+         #:#    #+#          :+:     -->
+<!--        ###         ###     ###   ###          ###   #############.fr       -->
+<!--                                                                            -->
+<!-- ************************************************************************** -->
+
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div data-th-text="${createMessage}">TODO write content</div>
+        <form action="#" data-th-action="@{'/pc-games'}" data-th-object="${pcGameForm}"
+              method="post" accept-charset="UTF-8">
+            <label for="title">Title</label>
+            <input id="title" type="text" data-th-field="*{title}" />
+            <label for="producer">Producer</label>
+            <input id="producer" type="text" data-th-field="*{producer}" />
+            <label for="genre">Genre</label>
+            <input id="genre" type="text" data-th-field="*{genre}" />
+            <label for="minimumAge">Minimum Age</label>
+            <input id="minimumAge" type="number" data-th-field="*{minimumAge}" />
+            <fieldset>
+                <legend>Select a choice for Is AAA : </legend>
+                <div>
+                    <input id="isAAATrue" value="true" type="radio" data-th-field="*{isAAA}" checked />
+                    <label for="isAAATrue">true</label>
+                </div>
+                <div>
+                    <input id="isAAAFalse" value="false" type="radio" data-th-field="*{isAAA}" />
+                    <label for="isAAAFalse">false</label>
+                </div>
+            </fieldset>
+            <input type="submit" value="Submit"/>
+        </form>
+    </body>
+</html>
+
+<!-- ************************************************************************** -->
+<!-- ****************************** PCGAME.HTML ******************************* -->
+<!-- ************************************************************************** -->
