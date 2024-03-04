@@ -1,0 +1,12 @@
+DROP TABLE IF EXISTS books;
+
+CREATE TABLE books(
+    id BIGINT AUTO_INCREMENT NOT NULL,
+    title VARCHAR(50) NOT NULL,
+    author VARCHAR(50) NOT NULL,
+    isbn VARCHAR(20) NOT NULL,
+    pages_num INT NOT NULL,
+    CONSTRAINT `PK_FILE_DATA`
+        PRIMARY KEY (id)
+);
+
