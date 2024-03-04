@@ -18,9 +18,9 @@ Admin user - username: admin / password: admin
 
 #########CONFIG_SERVER###################
 *Back Office - Serveur Apache Tomcat
-Intall JDKv20
+Intall JDKv21
 Install maven
-Build Back Office: mvn
+Build Back Office (Generate WAR file) : mvn package
 
 *Front Office - Serveur NodeJs (effectuer un npm i à la racine du projet)
 Lancer le Front office -'npm run dev'
