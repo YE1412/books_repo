@@ -1,0 +1,1 @@
+CREATE DATABASE jee_springboot_hibernate_exo;

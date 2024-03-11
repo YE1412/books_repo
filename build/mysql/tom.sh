@@ -1,0 +1,8 @@
+#!/bin/bash
+
+mysql -hlocalhost -uroot -p'1234'<<MYSQL_SCRIPT
+CREATE USER 'kali'@'%' IDENTIFIED BY 'kali';
+GRANT CREATE, UPDATE, DELETE, INSERT, ALTER, REFERENCES, DROP, SELECT ON *.* TO 'kali'@'%';
+FLUSH PRIVILEGES;
+MYSQL_SCRIPT
+
