@@ -9,7 +9,7 @@ services:
       args:
         - BDD_PATH='jdbc:mysql://mysql:3306/jee_springboot_hibernate_exo?zeroDateTimeBehavior=CONVERT_TO_NULL'
     ports:
-      - "8080:8080"
+      - "8081:8081"
     volumes: 
       - ./app:/var/www/html
     # depends_on:
