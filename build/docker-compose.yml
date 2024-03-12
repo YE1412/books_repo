@@ -41,7 +41,10 @@ services:
 
   nodejs-serveur:
     container_name: nodejs
-    build: './nodejs'
+    build:
+      context: './nodejs'
+      args:
+        - HOST=${DOCKER_HOST}
     restart: always
     ports:
       - '3000:3000' 
