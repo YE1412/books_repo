@@ -44,7 +44,7 @@ services:
     build:
       context: './nodejs'
       args:
-        - HOST=${DOCKER_HOST}
+        - DOCK_HOST=${D_HOST}
     restart: always
     ports:
       - '3000:3000' 
