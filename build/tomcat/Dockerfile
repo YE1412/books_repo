@@ -24,6 +24,6 @@ COPY --from=build /app/target/JEE_SPRINGBOOT_HIBERNATE_EXO-0.0.1-SNAPSHOT.war /u
 
 CMD ["catalina.sh", "run"]
 
-EXPOSE 8080
+EXPOSE 8081
 
 
