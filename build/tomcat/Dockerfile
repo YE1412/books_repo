@@ -1,10 +1,10 @@
 FROM jelastic/maven:3.9.5-openjdk-21 AS build
 WORKDIR  /app/
 COPY ./JEE_SPRINGBOOT_HIBERNATE_EXO/pom.xml ./
-#RUN mvn -f ./pom.xml verify clean --fail-never
+# RUN mvn -f ./pom.xml verify clean --fail-never
 
-# ARG BDD_PATH
-ENV BDD_URL 'jdbc:mysql://mysql:3306/jee_springboot_hibernate_exo?zeroDateTimeBehavior=CONVERT_TO_NULL'
+ARG BDD_PATH
+ENV BDD_URL $BDD_PATH
 
 COPY ./JEE_SPRINGBOOT_HIBERNATE_EXO/src/ ./src/
 RUN mvn -f ./pom.xml package
