@@ -7,23 +7,22 @@ services:
     build:
       context: './tomcat'
       args:
-        - BDD_PATH='jdbc:mysql://mysql:3306/jee_springboot_hibernate_exo?zeroDateTimeBehavior=CONVERT_TO_NULL'
+        - BDD_PATH=jdbc:mysql://${D_HOST}:3306/jee_springboot_hibernate_exo?zeroDateTimeBehavior=CONVERT_TO_NULL
+        - DOCK_HOST=${D_HOST}
+    network_mode: bridge
+    # networks:
+    #   - drivernet
     ports:
-      - "8080:8080"
+      - "8081:8081"
     volumes: 
       - ./app:/var/www/html
-    # depends_on:
-    #   - db
-    # environment:
-    #   MYSQL_DATABASE: jee_springboot_hibernate_exo
-    #   MYSQL_USER: root
-    #   MYSQL_PASSWORD: 1234
-    #   MYSQL_HOST: db-server
-
 
   db-server:
     container_name: mysql
     image: 'mysql'
+    network_mode: bridge
+    # networks:
+    #   - drivernet
     restart: always
     ports:
       - "3306:3306"
@@ -32,12 +31,6 @@ services:
       - ./mysql:/docker-entrypoint-initdb.d/:ro
     environment:
       MYSQL_ROOT_PASSWORD: 1234
-      # MYSQL_DATABASE: jee_springboot_hibernate_exo
-      # MYSQL_USER: kali
-      # MYSQL_PASSWORD: kali
-      # MYSQL_HOST: localhost
-    # depends_on:
-    #   - apps-server
 
   nodejs-serveur:
     container_name: nodejs
@@ -45,20 +38,16 @@ services:
       context: './nodejs'
       args:
         - DOCK_HOST=${D_HOST}
+    network_mode: bridge
+    # networks:
+    #   - drivernet
     restart: always
     ports:
       - '3000:3000' 
-    # environment:
-    #   MYSQL_DATABASE: jee_springboot_hibernate_exo
-    #   MYSQL_USER: kali
-    #   MYSQL_PASSWORD: kali
-    #   MYSQL_HOST: localhost   
+      
 volumes:
   app: {}
   dbData: {}
-
-networks:
-  network:
-    name: bridge
-    external: true
-    
+# networks:
+#   drivernet:
+#     name: docker0
