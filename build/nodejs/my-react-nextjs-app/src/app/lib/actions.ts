@@ -63,7 +63,14 @@ export async function loginAction(formData: LoginRequest) {
 		console.log(err);
 		//console.log(res);
 		//throw new Error('Failed to Login !');
-		return { message: err.response !== undefined ? err.response.data.message : 'Failed to login, remote server (back office) off !'};
+		var mess = 'Failed to login, remote server (back office) off !';
+		if (err.response !== undefined) {
+			mess = `Failed to login, remote server (back office) send ${err.response.status} Response !`;
+			if (err.response.data.message !== undefined){
+				mess = err.response.data.message;
+			}
+		}
+		return { message: mess };
   } finally {
   	if (success){
   		revalidatePath('/book/home');

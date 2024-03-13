@@ -6,16 +6,19 @@ services:
     build:
       context: './tomcat'
       args:
-        - BDD_PATH='jdbc:mysql://mysql:3306/jee_springboot_hibernate_exo?zeroDateTimeBehavior=CONVERT_TO_NULL'
+        - BDD_PATH=jdbc:mysql://${D_HOST:-localhost}:3306/jee_springboot_hibernate_exo?zeroDateTimeBehavior=CONVERT_TO_NULL
+    network_mode: bridge
     ports:
       - "8081:8081"
     volumes: 
       - ./app:/var/www/html
-
+    depends_on:
+      - db-server
 
   db-server:
     container_name: mysql
     image: 'mysql'
+    network_mode: bridge
     restart: always
     ports:
       - "3306:3306"
@@ -30,7 +33,8 @@ services:
     build:
       context: './nodejs'
       args:
-        - DOCK_HOST=${D_HOST}
+        - DOCK_HOST=${D_HOST:-localhost}
+    network_mode: bridge
     restart: always
     ports:
       - '3000:3000' 
