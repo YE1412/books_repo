@@ -7,7 +7,7 @@ import {
 	HomeIcon,
 	UserPlusIcon,
 	ArrowLeftStartOnRectangleIcon,
-	ArrowLeftEndOnRectangleIcon
+	ArrowLeftEndOnRectangleIcon,
 } from '@/app/lib/icons';
 import {
   NavbarBrand, 

@@ -169,7 +169,7 @@ export default function BookTable(){
 				<h2 className="text-center text-4xl font-bold tracking-tight sm:text-6xl text-slate-400">Book List</h2>
 		    </div>
 		    <div className="w-full flex justify-center mt-2">
-				<div className="w-[80%] border p-5">
+				<div className="w-[80%] p-5">
 					{message !== null ? 
 				    <div className="justify-center flex flex-wrap gap-4 mb-5">
 				      <Code color="danger">{message}</Code>

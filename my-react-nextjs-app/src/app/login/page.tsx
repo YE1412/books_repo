@@ -10,9 +10,7 @@ function Page() {
 	//console.log('Login Page Rendering...');
 	return (
 		<>
-			<div>
-				<LoginForm />
-			</div>
+			<LoginForm />
 		</>
 	);
 }

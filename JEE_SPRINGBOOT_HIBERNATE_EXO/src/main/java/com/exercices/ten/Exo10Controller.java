@@ -31,6 +31,7 @@ import com.exercices.ten.entity.RoleUser;
 import com.exercices.ten.entity.UserBook;
 import com.exercices.ten.otherclass.LoginDTO;
 import com.exercices.ten.otherclass.SignUpDTO;
+import com.exercices.ten.otherclass.UserFormRequest;
 import com.exercices.ten.otherclass.UserFormResponse;
 import com.exercices.ten.service.BookService;
 import com.exercices.ten.service.RoleUserService;
@@ -73,6 +74,11 @@ public class Exo10Controller {
     private final JwtTokenUtil jwtTokenUtil;
     private final UserRoleDetails uds;
     private final RoleUserService rus;
+    
+    @GetMapping(value="/")
+    public String welcome(){
+        return "Hello this page is OK !";
+    }
 //    @CrossOrigin(origins = {"http://localhost:4200", "http://localhost:5173", "http://localhost:3000"})
     @PostMapping(value=BOOK_API_BASE_PATH + "user/login")
     public ResponseEntity<UserFormResponse> getUser(@RequestBody final LoginDTO login) throws URISyntaxException{
@@ -104,8 +110,16 @@ public class Exo10Controller {
         
     }
     
+    private Set<RoleUser> formatRoles(Set<String> roles){
+        Set<RoleUser> ret = new HashSet<>();
+        for(String role:roles){
+            RoleUser r = rus.getRole(Long.valueOf(role));
+            ret.add(r);
+        }
+        return ret;
+    }
 //    @CrossOrigin(origins = {"http://localhost:4200", "http://localhost:5173", "http://localhost:3000"})
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping(value=BOOK_API_BASE_PATH + "user/signup")
     public UserFormResponse newUser(@RequestBody final SignUpDTO signUp){
         UserFormResponse ret = new UserFormResponse();
@@ -116,11 +130,7 @@ public class Exo10Controller {
                 b.setUsername(signUp.getUsername());
                 b.setEmail(signUp.getEmail());
                 b.setPassword(passwordEncoder.encode(signUp.getPassword()));
-                Set<RoleUser> roles = new HashSet<>();
-                for(String role:signUp.getRoles()){
-                    RoleUser r = rus.getRole(Long.valueOf(role));
-                    roles.add(r);
-                }
+                Set<RoleUser> roles = formatRoles(signUp.getRoles());
                 b.setRoles(roles);
                 ret.setUser(ubs.newUserBook(b));
                 ret.setMessage("User added successfully !");
@@ -130,6 +140,76 @@ public class Exo10Controller {
         ret.setMessage("Error while adding new user email/username already exists !");
         ret.setCode(1);
         return ret;
+    }
+    
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping(value=BOOK_API_BASE_PATH + "user/all")
+    public List<UserBook> getAllUsers(){
+        return ubs.findAllUsers();
+    }
+    
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') OR hasAuthority('ROLE_USER')")
+    @GetMapping(value=BOOK_API_BASE_PATH + "user/{id}")
+    public UserBook getUser(@PathVariable Long id){
+        return ubs.findUser(id);
+    }
+    
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') OR hasAuthority('ROLE_USER')")
+    @PutMapping(value=BOOK_API_BASE_PATH + "user/{id}")
+    public UserFormResponse updateUser(@PathVariable Long id, @RequestBody final UserFormRequest u){
+        UserFormResponse ret = new UserFormResponse();
+        if (ubs.findUser(id) != null){
+            UserBook user = ubs.getByUsernameOrEmail(u.getUsername(), u.getEmail());
+//            System.out.println("Users");
+//            System.out.println(users);
+            if (user == null || user.getId().equals(id)){
+                UserBook usr = new UserBook(); 
+                usr.setId(u.getId());
+                usr.setEmail(u.getEmail());
+                usr.setName(u.getName());
+                usr.setPassword(u.getPassword());
+                usr.setUsername(u.getUsername());
+                usr.setRoles(formatRoles(u.getRoles()));
+                ubs.updateUser(id, usr);
+                ret.setCode(0);
+                ret.setMessage("User successfully updated !");
+                ret.setUser(usr);
+                return ret;
+            } else {
+                ret.setMessage("Error while updating user, username/email already exists !");
+                ret.setCode(1);
+                return ret;
+            }
+        }
+        ret.setMessage("Error while updating user, user doesn't exist !");
+        ret.setCode(1);
+        return ret;
+    }
+    
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PutMapping(value=BOOK_API_BASE_PATH + "user/roles/{id}")
+    public UserFormResponse updateUserRoles(@PathVariable Long id, @RequestBody final Set<String> roles){
+        UserFormResponse ret = new UserFormResponse();
+        UserBook u = ubs.findUser(id);
+        if (u != null){
+            u.setRoles(formatRoles(roles));
+            ubs.updateUser(id, u);
+            ret.setCode(0);
+            ret.setMessage("User successfully updated !");
+            ret.setUser(u);
+            return ret;
+        }
+        ret.setMessage("Error while updating user, user doesn't exist !");
+        ret.setCode(1);
+        return ret;
+    }
+    
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') OR hasAuthority('ROLE_USER')")
+    @DeleteMapping(value=BOOK_API_BASE_PATH + "user/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable Long id){
+        //return ubs.findUser(id);
+        ubs.deleteUser(id);
     }
     /** 
      * Cross Origin Requests For "http://localhost:4200" --> Angular App

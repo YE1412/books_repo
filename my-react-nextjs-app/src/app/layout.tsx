@@ -32,12 +32,12 @@ export default function RootLayout({
   //const router = useRouter();
   const pathname = headersList.get("x-invoke-path") || "";
   return (
-    <html lang="en" className='light'>
+    <html lang="en" className="dark">
       {/*<body className={inter.className}>{children}</body>*/}
       <body className='bg-neutral-150'>
         <Providers>
           <UserSessionProvider>
-            <Navbar className="bg-slate-300 mb-6">
+            <Navbar isBordered className="mb-6 bg-transparent">
               <NavbarContent className="hidden sm:flex gap-4" justify="center">
                 <NavLinks />
               </NavbarContent>

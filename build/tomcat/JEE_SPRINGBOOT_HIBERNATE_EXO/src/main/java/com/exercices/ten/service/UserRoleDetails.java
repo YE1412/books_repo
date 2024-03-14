@@ -28,6 +28,7 @@ package com.exercices.ten.service;
 
 import com.exercices.ten.entity.UserBook;
 import com.exercices.ten.repository.UserBookRepository;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,14 +49,14 @@ public class UserRoleDetails implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserBook ub = br.findByUsernameOrEmail(username, username);
-        if (ub == null){
+        if (ub != null){
+            Set<GrantedAuthority> authorities = ub.getRoles().stream()
+                .map((role) -> new SimpleGrantedAuthority(role.getName()))
+                .collect(Collectors.toSet());
+            return new User(username, ub.getPassword(), authorities);
+        } else {
             throw new UsernameNotFoundException("User not exists by Username");
         }
-        
-        Set<GrantedAuthority> authorities = ub.getRoles().stream()
-            .map((role) -> new SimpleGrantedAuthority(role.getName()))
-            .collect(Collectors.toSet());
-        return new User(username, ub.getPassword(), authorities);
     }
 
 }

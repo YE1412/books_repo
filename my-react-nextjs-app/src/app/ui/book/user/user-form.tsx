@@ -112,7 +112,7 @@ export default function CreateUserForm(): React.FC<IFormProps> {
 			<h2 className="text-center text-4xl font-bold tracking-tight sm:text-6xl text-slate-400">User Create Form</h2>
 	    </div>
 		<div className="w-full flex justify-center mt-2">
-			<div className="w-[400px] border p-5">
+			<div className="w-[400px] p-5">
 				<Form submit={createUser} defaultValues={emptyUser} className="flex flex-col gap-4">
 					<Input size="lg" 
 						variant="bordered"

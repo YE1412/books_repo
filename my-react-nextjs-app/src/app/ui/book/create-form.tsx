@@ -102,7 +102,7 @@ export default function CreateBookForm(): React.FC<IFormProps> {
 			<h2 className="text-center text-4xl font-bold tracking-tight sm:text-6xl text-slate-400">Create Book Form</h2>
 	    </div>
 		<div className="w-full flex justify-center mt-2">
-			<div className="w-[400px] border p-5">
+			<div className="w-[400px] p-5">
 				<Form submit={createBook} defaultValues={{title: '', author: '', isbn: '', pagesNum: 0}} className="flex flex-col gap-4">
 					<Input size="lg" 
 						variant="bordered" 

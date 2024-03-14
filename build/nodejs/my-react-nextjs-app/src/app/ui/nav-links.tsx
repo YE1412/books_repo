@@ -64,6 +64,7 @@ export default function NavLinks() {
 							<Link
 								key={ind}
 								href={link.href}
+								className="p-0 bg-transparent data-[hover=true]:bg-transparent"
 								color={
 									clsx(
 										{

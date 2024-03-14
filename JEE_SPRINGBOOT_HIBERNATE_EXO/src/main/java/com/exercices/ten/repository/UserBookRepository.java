@@ -36,6 +36,7 @@ public interface UserBookRepository extends JpaRepository<UserBook, Long> {
     public UserBook findByUsernameOrEmailAndPassword(String username, String email, String pass);    
     public boolean existsByUsernameOrEmail(String username, String email);
     public UserBook findByUsernameOrEmail(String username, String email);
+    //public List<UserBook> findByRoles()
 }
 
 /* ************************************************************************** */

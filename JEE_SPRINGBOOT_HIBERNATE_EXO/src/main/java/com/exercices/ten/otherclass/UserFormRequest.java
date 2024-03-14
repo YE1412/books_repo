@@ -1,13 +1,13 @@
 /* ************************************************************************** */
 /* ************************************************************************** */
-/* ************************** UserRoleDetails.java ************************** */
+/* ************************** UserFormRequest.java ************************** */
 /* ************************************************************************** */
 /* ************************************************************************** */
-/*  Filename : UserRoleDetails.java                                           */
+/*  Filename : UserFormRequest.java                                           */
 /* ************************************************************************** */
-/*  Creation Date : Feb 26, 2024, 8:37:11 PM                                  */
+/*  Creation Date : Mar 13, 2024, 8:44:02 AM                                  */
 /* ************************************************************************** */
-/*  Last modified : Feb 26, 2024, 8:37:11 PM                                  */
+/*  Last modified : Mar 13, 2024, 8:44:02 AM                                  */
 /* ************************************************************************** */
 /*  Created by : Mad <coding>                                                 */
 /* ************************************************************************** */
@@ -24,43 +24,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-package com.exercices.ten.service;
+package com.exercices.ten.otherclass;
 
-import com.exercices.ten.entity.UserBook;
-import com.exercices.ten.repository.UserBookRepository;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Service
-public class UserRoleDetails implements UserDetailsService {
-    
-    @Autowired
-    private UserBookRepository br;
-    
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserBook ub = br.findByUsernameOrEmail(username, username);
-        if (ub != null){
-            Set<GrantedAuthority> authorities = ub.getRoles().stream()
-                .map((role) -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toSet());
-            return new User(username, ub.getPassword(), authorities);
-        } else {
-            throw new UsernameNotFoundException("User not exists by Username");
-        }
-    }
-
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserFormRequest {
+    private Long id;
+    private String name;
+    private String username;
+    private String email;
+    private String password;
+    private Set<String> roles;
 }
 
 /* ************************************************************************** */
-/* ************************** USERROLEDETAILS.JAVA ************************** */
+/* ************************** USERFORMREQUEST.JAVA ************************** */
 /* ************************************************************************** */

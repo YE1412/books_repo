@@ -3,18 +3,45 @@
 @tailwind utilities;
 
 :root {
+   color-scheme: light dark;
+}
+
+:root.dark {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
+}
+:root.light {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
+/*@media (prefers-color-scheme: dark) {
+  :root.dark {
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
   }
+  :root.light {
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
+  }
 }
+
+@media (prefers-color-scheme: light) {
+  :root.light {
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
+  }
+  :root.dark {
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
+  }
+}*/
 
 body {
   color: rgb(var(--foreground-rgb));
@@ -24,6 +51,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+    min-height: 100vh;
 }
 
 @layer utilities {

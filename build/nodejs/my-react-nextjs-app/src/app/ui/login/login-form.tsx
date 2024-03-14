@@ -105,7 +105,7 @@ export default function LoginForm(): React.FC<IFormProps> {
 			<h2 className="text-center text-4xl font-bold tracking-tight sm:text-6xl text-slate-400">Login Form</h2>
 	    </div>
 		<div className="w-full flex justify-center mt-2">
-			<div className="w-[400px] border p-5">
+			<div className="w-[400px] p-5">
 				<Form submit={login} defaultValues={{usernameOrEmail: '', password: ''}} className="flex flex-col gap-4">
 					<Input size="lg" 
 						variant="bordered" 

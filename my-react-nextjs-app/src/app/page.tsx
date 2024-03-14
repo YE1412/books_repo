@@ -1,8 +1,8 @@
 function SafeHydrate({ children }) {
   return (
-    <div>
+    <>
       { children }
-    </div>
+    </>
   )
 }
 
