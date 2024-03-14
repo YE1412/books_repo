@@ -43,8 +43,8 @@ services:
         ipv4_address: 172.18.0.2
     restart: always
     ports:
-      - '3000:3000' 
-
+#     - '5173:5173' 
+      - '3000:3000'
 volumes:
   app: {}
   dbData: {}
