@@ -1,18 +1,18 @@
 version: "3.8"
 services:
-  
   apps-server:
     container_name: tomcat
     build:
       context: './tomcat'
       args:
         - BDD_PATH=jdbc:mysql://172.18.0.3:3306/jee_springboot_hibernate_exo?zeroDateTimeBehavior=CONVERT_TO_NULL
+        - BACK_PORT=8081
     networks:
       custom_net:
         ipv4_address: 172.18.0.4
     ports:
       - "8081:8081"
-    volumes: 
+    volumes:
       - ./app:/var/www/html
     depends_on:
       - db-server
@@ -26,9 +26,10 @@ services:
     restart: always
     ports:
       - "3306:3306"
-    volumes: 
+    volumes:
       - ./dbData:/var/lib/mysql
       - ./mysql:/docker-entrypoint-initdb.d/:ro
+    command: --general-log=ON --general-log-file=/var/log/mysql/mysql.log --log-error=/var/log/mysql/mysql_error.log
     environment:
       MYSQL_ROOT_PASSWORD: 1234
 
@@ -37,15 +38,16 @@ services:
     build:
       context: './nodejs'
       args:
-        - DOCK_HOST=172.18.0.4
+        - BACK_HOST=172.18.0.4
         - BACK_PORT=8081
     networks:
       custom_net:
         ipv4_address: 172.18.0.2
     restart: always
     ports:
-#     - '5173:5173' 
+      #     - '5173:5173' 
       - '3000:3000'
+
 volumes:
   app: {}
   dbData: {}

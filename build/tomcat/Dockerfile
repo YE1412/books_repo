@@ -17,9 +17,11 @@ COPY ./JEE_SPRINGBOOT_HIBERNATE_EXO/    /web/
 RUN apt-get update && apt-get install -y openjdk-21-jdk maven
 # COPY ./JEE_SPRINGBOOT_HIBERNATE_EXO-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
 ARG BDD_PATH
+ARG BACK_PORT
 ENV BDD_URL $BDD_PATH
-RUN echo $BDD_URL
-RUN sed -i 's/port="8080"/port="8081"/g' ${CATALINA_HOME}/conf/server.xml
+ENV TOMCAT_PORT $BACK_PORT
+# RUN echo $BDD_URL
+RUN sed -i "s/port=\"8080\"/port=\"${TOMCAT_PORT}\"/g" ${CATALINA_HOME}/conf/server.xml
 COPY ./JEE_SPRINGBOOT_HIBERNATE_EXO.xml /usr/local/tomcat/conf/Catalina/localhost/
 COPY --from=build /app/target/ ./target
 COPY --from=build /app/target/JEE_SPRINGBOOT_HIBERNATE_EXO-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps
