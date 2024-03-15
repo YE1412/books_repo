@@ -38,6 +38,7 @@ services:
       context: './nodejs'
       args:
         - DOCK_HOST=172.18.0.4
+        - BACK_PORT=8081
     networks:
       custom_net:
         ipv4_address: 172.18.0.2
