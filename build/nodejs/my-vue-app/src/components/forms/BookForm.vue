@@ -4,9 +4,11 @@ import { GetBook, InsertBook, UpdateBook } from '@/utils/axios'
 import { useUserStore } from '@/stores/user'
 import type { BookModel } from '@/utils/types'
 import { useRouter } from 'vue-router'
+import TheDialog from '@/components/TheDialog'
 
 const props = defineProps<{
-	idBook?: number
+	idBook?: number,
+	isDark?: boolean
 }>()
 const usrStore = useUserStore()
 const serviceBook: BookModel = ref({ id: 0, title: '', author: '', isbn: '', pagesNum: 0})
@@ -53,6 +55,13 @@ const actionButtonIcon = computed(() => {
 const bookForm = ref(false)
 const bookFormRef = ref<HTMLFormElement>(null)
 const router = useRouter()
+const dialogText = computed(() => {
+	if (props !== undefined && props.idBook > 0){
+		return 'Are you sure to update the book ?'
+	} else {
+		return 'Are you sure to insert the book ?'
+	}
+})
 const reset = () => {
 	//console.log("clicked !");
 	//console.log(loginFormRef);
@@ -131,12 +140,11 @@ onBeforeMount(async() => {
 </script>
 
 <template>
-	<v-sheet class="my-4 mx-auto" v-if="message" width="300">
+	<v-sheet class="my-4 mx-auto" v-if="message" width="300" :theme="isDark ? 'dark' : 'light'">
 		<div class="bg-red-darken-2 text-center"><span>{{ message }}</span></div>
 	</v-sheet>
-	<v-sheet class="mx-auto" width="300">
+	<v-sheet class="mx-auto" width="300" :theme="isDark ? 'dark' : 'light'">
 		<v-form 
-			@submit.prevent="actions($event, formAction)" 
 			v-model="bookForm"
 			ref="bookFormRef">
 			<v-text-field
@@ -187,10 +195,14 @@ onBeforeMount(async() => {
 				prepend-inner-icon="fas fa-book-open">
 			</v-text-field>
 			<v-btn :prepend-icon="actionButtonIcon" 
-				class="mt-2" 
-				type="submit"
+				class="mt-2"
 				:disabled="!bookForm" 
-				block>{{actionButtonText}}
+				block>
+					{{actionButtonText}}
+					<TheDialog
+					:text="dialogText"
+					:actionParent="actions"
+					:formParams="formAction" />
 			</v-btn>
 			<v-btn class="mt-4" 
 				color="error" 

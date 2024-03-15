@@ -3,17 +3,19 @@ import { useRouter, useRoute } from 'vue-router'
 import { ref, computed, onBeforeMount } from 'vue'
 import TheTitle from '@/components/TheTitle'
 import TheTable from '@/components/TheTable'
-
+defineProps<{
+	isDark?: Boolean
+}>()
 const breadcrumbsItems = [
 	{
 		title: 'Books',
 		disabled: true,
-		href: '/books/home'
+		href: '#/books/home'
 	},
 	{
 		title: 'List',
 		disabled: true,
-		href: '/books/home'
+		href: '#/books/home'
 	}
 ]
 const message = ref(null)
@@ -37,12 +39,12 @@ onBeforeMount(() => {
 			<div class="bg-red-darken-2 text-center"><span>{{ message }}</span></div>
 		</v-sheet> -->
 		<v-row>
-			<TheTitle pageTitle="Book List"/>
+			<TheTitle :isDark="isDark" pageTitle="Book List"/>
 		</v-row>
 		<v-row>
 			<v-col class="pa-0"
 				cols="12">
-				<TheTable />
+				<TheTable :isDark="isDark" />
 			</v-col>
 		</v-row>
 	</v-container>

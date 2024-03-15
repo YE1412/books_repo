@@ -2,7 +2,11 @@
 import { useUserStore } from '@/stores/user'
 import { computed, ref, onBeforeMount } from 'vue'
 import { GetBooks, DeleteBook } from '@/utils/axios'
+import TheDialog from '@/components/TheDialog'
 
+defineProps<{
+	isDark?: Boolean
+}>()
 const usrStore = useUserStore();
 const columns = computed(() => {
 	var ret = [{
@@ -86,7 +90,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-	<v-table theme="light">
+	<v-table :theme="isDark ? 'dark' : 'light'">
 		<thead>
 			<tr>
 				<th v-for="column in columns"
@@ -111,8 +115,14 @@ onBeforeMount(async () => {
 							class="text-indigo-lighten-5">Update</router-link>
 		      		</v-btn> | <v-btn 
 		      			class="text-button"
-		      			prepend-icon="fas fa-trash" 
-		      			@click="deleteBook($event, book.id)" color="error">Delete</v-btn>
+		      			prepend-icon="fas fa-trash"
+		      			color="error">
+		      			Delete
+		      			<TheDialog
+							text="Are you sure to delete this book ?"
+							:actionParent="deleteBook"
+							:formParams="book.id" />
+		      		</v-btn>
 		      	</td>
 			</tr>
 			<tr v-if="books.length === 0">

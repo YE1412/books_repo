@@ -10,7 +10,7 @@ const __PORT__ = process.env.BACKOFF_PORT !== undefined
 	: '8080';
 
 const axiosInterceptorInstance = axios.create({
-	baseURL: `http://${WEBAPP_HOST}:${BACKOFF_PORT}/JEE_SPRINGBOOT_HIBERNATE_EXO/api`,
+	baseURL: `http://${__HOST__}:${__PORT__}/JEE_SPRINGBOOT_HIBERNATE_EXO/api`,
 });
 
 // Request interceptor

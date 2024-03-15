@@ -39,3 +39,12 @@ export type UserFormResponse = {
     code: number;
     toker?: string;
 }
+
+export type UserFormRequest = {
+    id: number;
+    name: string;
+    username: string;
+    email: string;
+    password: string;
+    roles: string[];
+}

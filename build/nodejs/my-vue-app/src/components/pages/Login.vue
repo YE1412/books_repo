@@ -6,7 +6,9 @@ import TheTitle from '@/components/TheTitle'
 /*const emit = defineEmits<{
 	  (e: 'user-detail-child'): void
 }>();*/
-
+const props = defineProps<{
+	isDark?: boolean
+}>()
 //const user = defineModel()
 //console.log(user)
 //import 
@@ -16,12 +18,12 @@ import TheTitle from '@/components/TheTitle'
 	<v-container
 		class="spacing-playground pa-6">
 		<v-row>
-			<TheTitle pageTitle="Login page"/>
+			<TheTitle :isDark="props.isDark" pageTitle="Login page"/>
 		</v-row>
 		<v-row>
 			<v-col class="pa-0"
 				cols="12">
-				<LoginForm />
+				<LoginForm :isDark="props.isDark"/>
 			</v-col>
 		</v-row>
 	</v-container>

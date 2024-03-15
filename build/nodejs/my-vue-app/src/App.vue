@@ -5,11 +5,16 @@ import TheToolbar from '@/components/TheToolbar'
 import { RouterView } from 'vue-router';
 import { reactive, ref, watch } from 'vue';
 //import { useUserStore } from '@/stores/user'
+import { useDark, useToggle } from '@vueuse/core'
 
 const user = ref(null);
+const isDark = useDark({
+  selector: 'html',
+});
+const toogleDark = useToggle(isDark);
+//toogleDark()
 //const usrStore = useUserStore();
 //provide('userSession', user.value)
-
 //watch(user, async (newUser, oldUser) => {
   //console.log('Old User !')
   //console.log(oldUser);
@@ -20,8 +25,8 @@ const user = ref(null);
 </script>
 
 <template>
-  <TheToolbar />
-  <router-view></router-view>
+  <TheToolbar v-model="isDark" />
+  <router-view :isDark="isDark"></router-view>
   <!-- <header>
     <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
 

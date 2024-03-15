@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import UserForm from '@/components/forms/UserForm'
 import TheTitle from '@/components/TheTitle'
+defineProps<{
+	isDark?: Boolean
+}>()
 
 const breadcrumbsItems = [
 	{
@@ -10,7 +13,7 @@ const breadcrumbsItems = [
 	{
 		title: 'New User',
 		disabled: true,
-		href: '/users/new'
+		href: '#/users/new'
 	}
 ]
 </script>
@@ -22,12 +25,12 @@ const breadcrumbsItems = [
 			<v-breadcrumbs :items="breadcrumbsItems" divider='>' />
 		</v-row>
 		<v-row>
-			<TheTitle pageTitle="Insert User"/>
+			<TheTitle :isDark="isDark" pageTitle="Insert User"/>
 		</v-row>
 		<v-row>
 			<v-col class="pa-0"
 				cols="12">
-				<UserForm />
+				<UserForm :isDark="isDark" :profile="null"/>
 			</v-col>
 		</v-row>
 	</v-container>

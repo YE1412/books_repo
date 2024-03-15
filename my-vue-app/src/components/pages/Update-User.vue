@@ -1,34 +1,30 @@
 <script setup lang="ts">
-import { useRouter, useRoute } from 'vue-router'
-import { ref, computed, watch, onBeforeMount } from 'vue'
+import UserForm from '@/components/forms/UserForm'
 import TheTitle from '@/components/TheTitle'
-import BookForm from '@/components/forms/BookForm'
+import { onBeforeMount, ref } from 'vue'
+import { useRoute } from 'vue-router'
 defineProps<{
 	isDark?: Boolean
 }>()
 
-const route = useRoute();
+const userId = ref(0)
 const breadcrumbsItems = [
 	{
-		title: 'Books',
+		title: 'Users',
 		disabled: false,
-		href: '#/books/home'
+		href: '#/users/home'
 	},
 	{
-		title: 'Update Book',
-		disabled: true,
-		href: '#/books/:id'
+		title: 'Update User',
+		disabled: true
 	}
 ]
-const bookId = ref(0)
+const route = useRoute()
 
-watch(route, async (to, from)=> {
-	//console.log(route.params)
-})
 onBeforeMount(() => {
 	//console.log(route.params)
 	//console.log(/^\d+$/.test(route.params.id))
-	bookId.value = /^\d+$/.test(route.params.id)
+	userId.value = /^\d+$/.test(route.params.id)
 		? parseInt(route.params.id)
 		: 0
 })
@@ -41,12 +37,12 @@ onBeforeMount(() => {
 			<v-breadcrumbs :items="breadcrumbsItems" divider='>' />
 		</v-row>
 		<v-row>
-			<TheTitle :isDark="isDark" :pageTitle="'Update Book #'+bookId"/>
+			<TheTitle :isDark="isDark" :pageTitle="'Update User #'+userId"/>
 		</v-row>
 		<v-row>
 			<v-col class="pa-0"
 				cols="12">
-				<BookForm :isDark="isDark" :id-book="bookId"/>
+				<UserForm :isDark="isDark" :idUser="userId" :profile="false"/>
 			</v-col>
 		</v-row>
 	</v-container>

@@ -6,12 +6,9 @@
 //	import { addItem } from '@/utils/session'
 	import { useUserStore } from '@/stores/user'
 	//import TheTitle from '@/components/TheTitle'
-	/*const props = defineProps({
-
-	})*/
-	/*const emit = defineEmits<{
-	  (e: 'user-details'): void
-	}>();*/
+	defineProps<{
+		isDark?: Boolean
+	}>()
 	const serviceLogin: LoginRequest = reactive({usernameOrEmail: '', password: ''})
 	const loginFormRef = ref<HTMLFormElement>(null)
 	const loginForm = ref(false)
@@ -86,7 +83,7 @@ export default {
 	<v-sheet class="my-4 mx-auto" v-if="message" width="300">
 		<div class="bg-red-darken-2 text-center"><span>{{ message }}</span></div>
 	</v-sheet>
-	<v-sheet class="mx-auto" width="300">
+	<v-sheet class="mx-auto" width="300" :theme="isDark ? 'dark' : 'light'">
 		<v-form 
 			@submit.prevent="login" 
 			v-model="loginForm"

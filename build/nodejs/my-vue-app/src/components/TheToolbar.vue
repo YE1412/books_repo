@@ -1,4 +1,4 @@
-<script setup lang="ts">
+ <script setup lang="ts">
 	import { ref, computed, reactive } from 'vue'
 	import { useUserStore } from '@/stores/user'
 	import { useRouter } from 'vue-router'
@@ -8,7 +8,7 @@
 	/*const buttons = ref([
 		{ text: 'Login', icon: 'fas fa-right-to-bracket', isLink: true, action: null, link: '/login' }
 	])*/
-	//const user = defineModel()
+	const isDark = defineModel()
 	const usrStore = useUserStore()
 	const links = computed(() => {
 		var ret = []
@@ -21,6 +21,12 @@
 					isLink: true,
 					action: null,
 					link: '/books/new'
+				}, {
+					title: 'Users',
+					icon: 'fas fa-users',
+					isLink: true,
+					action: null,
+					link: '/users/home'
 				})
 			}
 		} else {
@@ -31,16 +37,13 @@
 	const buttons = computed(() => {
 		var ret = []
 		if (usrStore.isConnected){
-			if (usrStore.isAdmin){
-				ret.push({
-					text: 'New User',
-					icon: 'fas fa-user-plus',
-					isLink: true,
-					action: null,
-					link: '/users/new'
-				})
-			}
 			ret.push({
+				text: 'Profile',
+				icon: 'fas fa-address-card',
+				isLink: true,
+				action: null,
+				link: '/users/profile/'+usrStore.user.id
+			}, {
 				text: 'Logout',
 				icon: 'fas fa-right-from-bracket',
 				isLink: false,
@@ -48,6 +51,13 @@
 				link: null
 			})
 		} else {
+			ret.push({
+				text: 'New User',
+				icon: 'fas fa-user-plus',
+				isLink: true,
+				action: null,
+				link: '/users/new'
+			})
 			ret.push({ text: 'Login', icon: 'fas fa-right-to-bracket', isLink: true, action: null, link: '/login' })
 		}
 		return ret
@@ -66,7 +76,8 @@
 <template>
 	<v-toolbar
   		density="comfortable"
-  		:elevation="8">
+  		:elevation="8"
+  		:theme="isDark ? 'dark' : 'light'">
   		<v-menu>
 			<template v-slot:activator="{ props }">
 				<v-app-bar-nav-icon v-bind="props"></v-app-bar-nav-icon>

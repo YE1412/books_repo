@@ -1,6 +1,7 @@
 <script setup lang="ts">
 defineProps<{
-	pageTitle: String
+	pageTitle: String,
+	isDark?: Boolean
 }>()
 /*defineProps({
 	pageTitle: {
@@ -15,7 +16,8 @@ defineProps<{
 		cols="12">
 			<v-sheet
 				class="ma-2"
-				rounded>
+				rounded
+				:theme="isDark ? 'dark' : 'light'">
 					<div
 						class="py-4">
 						<div

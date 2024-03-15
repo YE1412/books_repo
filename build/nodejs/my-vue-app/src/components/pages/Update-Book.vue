@@ -3,18 +3,21 @@ import { useRouter, useRoute } from 'vue-router'
 import { ref, computed, watch, onBeforeMount } from 'vue'
 import TheTitle from '@/components/TheTitle'
 import BookForm from '@/components/forms/BookForm'
+defineProps<{
+	isDark?: Boolean
+}>()
 
 const route = useRoute();
 const breadcrumbsItems = [
 	{
 		title: 'Books',
 		disabled: false,
-		href: '/books/home'
+		href: '#/books/home'
 	},
 	{
 		title: 'Update Book',
 		disabled: true,
-		href: '/books/:id'
+		href: '#/books/:id'
 	}
 ]
 const bookId = ref(0)
@@ -38,12 +41,12 @@ onBeforeMount(() => {
 			<v-breadcrumbs :items="breadcrumbsItems" divider='>' />
 		</v-row>
 		<v-row>
-			<TheTitle :pageTitle="'Update Book #'+bookId"/>
+			<TheTitle :isDark="isDark" :pageTitle="'Update Book #'+bookId"/>
 		</v-row>
 		<v-row>
 			<v-col class="pa-0"
 				cols="12">
-				<BookForm :id-book="bookId"/>
+				<BookForm :isDark="isDark" :id-book="bookId"/>
 			</v-col>
 		</v-row>
 	</v-container>
