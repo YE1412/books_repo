@@ -7,6 +7,7 @@ services:
       args:
         - BDD_PATH=jdbc:mysql://172.18.0.3:3306/jee_springboot_hibernate_exo?zeroDateTimeBehavior=CONVERT_TO_NULL
         - BACK_PORT=8081
+        - FRONT_ADDR=172.18.0.2
     networks:
       custom_net:
         ipv4_address: 172.18.0.4
@@ -45,8 +46,8 @@ services:
         ipv4_address: 172.18.0.2
     restart: always
     ports:
-      #     - '5173:5173' 
-      - '3000:3000'
+      - '5173:5173'
+      #- '3000:3000'
 
 volumes:
   app: {}

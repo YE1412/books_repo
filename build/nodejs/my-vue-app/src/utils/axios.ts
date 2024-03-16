@@ -5,11 +5,11 @@ import type { LoginRequest,
 	UserFormResponse,
 	UserFormRequest } from '@/utils/types'
 
-const __HOST__ = process.env.WEBAPP_HOST !== undefined
-	? process.env.WEBAPP_HOST
+const __HOST__ = import.meta.env.WEBAPP_HOST !== undefined
+	? import.meta.env.WEBAPP_HOST
 	: 'localhost'
-const __PORT__ = process.env.BACKOFF_PORT !== undefined
-	? process.env.BACKOFF_HOST
+const __PORT__ = import.meta.env.BACKOFF_PORT !== undefined
+	? import.meta.env.BACKOFF_HOST
 	: '8080'
 
 const axiosInterceptorInstance = axios.create({

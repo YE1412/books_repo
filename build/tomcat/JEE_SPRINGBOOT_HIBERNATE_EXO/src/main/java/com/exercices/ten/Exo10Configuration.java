@@ -28,6 +28,7 @@ package com.exercices.ten;
 
 import static java.util.Locale.filter;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -58,6 +59,8 @@ import org.springframework.web.filter.CorsFilter;
 @AllArgsConstructor
 public class Exo10Configuration {
     private final JwtTokenFilter jwtTokenFilter;
+    @Value("${com.exercices.ten.front_webapp_host}")
+    private final String frontHost;
     
     @Bean
     public static PasswordEncoder passwordEncoder(){
@@ -96,9 +99,9 @@ public class Exo10Configuration {
         UrlBasedCorsConfigurationSource src = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:4200");
-        config.addAllowedOrigin("http://localhost:5173");
-        config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedOrigin("http://"+frontHost+":4200");
+        config.addAllowedOrigin("http://"+frontHost+":5173");
+        config.addAllowedOrigin("http://"+frontHost+":3000");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         src.registerCorsConfiguration("/**", config);
