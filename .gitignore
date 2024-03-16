@@ -1,5 +1,9 @@
 my-react-nextjs-app/node_modules
+my-react-nextjs-app/.git
 my-vue-app/node_modules
+my-vue-app/.git
 my-angular-app/node_modules
-build/dbData 
+my-angular-app/.git
+build/dbData
+build/app
 .git/COMMIT_EDITMSG

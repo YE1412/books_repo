@@ -45,7 +45,9 @@ services:
         ipv4_address: 172.18.0.2
     restart: always
     ports:
+      # Uncomment this to enable VUEJS APP
       #- '5173:5173'
+      # Uncomment this to enable REACT APP
       - '3000:3000'
 
 volumes:

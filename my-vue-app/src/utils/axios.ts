@@ -5,15 +5,22 @@ import type { LoginRequest,
 	UserFormResponse,
 	UserFormRequest } from '@/utils/types'
 
-const __HOST__ = import.meta.env.WEBAPP_HOST !== undefined
-	? import.meta.env.WEBAPP_HOST
+const __HOST__ = import.meta.env.VITE_WEBAPP_HOST !== undefined
+	? import.meta.env.VITE_WEBAPP_HOST
 	: 'localhost'
-const __PORT__ = import.meta.env.BACKOFF_PORT !== undefined
-	? import.meta.env.BACKOFF_HOST
+const __PORT__ = import.meta.env.VITE_BACKOFF_PORT !== undefined
+	? import.meta.env.VITE_BACKOFF_PORT
 	: '8080'
 
+/*console.log(import.meta.env.VITE_WEBAPP_HOST)
+console.log(import.meta.env.VITE_BACKOFF_PORT)
+console.log(import.meta.env)*/
+
+const URL = `http://${__HOST__}:${__PORT__}/JEE_SPRINGBOOT_HIBERNATE_EXO/api`
+//console.log(URL)
+
 const axiosInterceptorInstance = axios.create({
-	baseURL: `http://${__HOST__}:${__PORT__}/JEE_SPRINGBOOT_HIBERNATE_EXO/api`,
+	baseURL: URL,
 });
 
 // Request interceptor
