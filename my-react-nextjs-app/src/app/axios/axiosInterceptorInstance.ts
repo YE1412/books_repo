@@ -9,27 +9,33 @@ const __PORT__ = process.env.BACKOFF_PORT !== undefined
 	? process.env.BACKOFF_PORT
 	: '8080';
 
-const axiosInterceptorInstance = axios.create({
-	baseURL: `http://${__HOST__}:${__PORT__}/JEE_SPRINGBOOT_HIBERNATE_EXO/api`,
-});
+const axiosInterceptorInstance = async () => {
+	axios.create({
+		baseURL: `http://${__HOST__}:${__PORT__}/JEE_SPRINGBOOT_HIBERNATE_EXO/api`,
+	});
+	await config();
+}
 
-// Request interceptor
-axiosInterceptorInstance.interceptors.request.use(
-	(config) => {
-		return config;
-	},
-	(error) => {
-		return Promise.reject(error);
-	}
-);
+const config = async () => {
+	var instance = await axiosInterceptorInstance(); // Request interceptor
+	instance.interceptors.request.use(
+		(config) => {
+			return config;
+		},
+		(error) => {
+			return Promise.reject(error);
+		}
+	);
 
-axiosInterceptorInstance.interceptors.response.use(
-	(response) => {
-		return response;
-	},
-	(error) => {
-		return Promise.reject(error);
-	}
-);
+	instance.interceptors.response.use(
+		(response) => {
+			return response;
+		},
+		(error) => {
+			return Promise.reject(error);
+		}
+	);	
+}
+
 
 export default axiosInterceptorInstance;

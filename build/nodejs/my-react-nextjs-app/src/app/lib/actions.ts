@@ -7,6 +7,8 @@ import { redirect } from 'next/navigation';
 import axiosInstance from '@/app/axios/axiosInterceptorInstance';
 import type { LoginRequest, LoginResponse, BookModel, UserModel } from '@/app/lib/definitions';
 
+const instance = axiosInstance;
+
 export async function setSessionData(sessionData) {
 	const encryptedSessionData = sessionData;
 	//console.log('Session setting');
@@ -53,7 +55,7 @@ export async function loginAction(formData: LoginRequest) {
   	//console.log(config());
 		//console.log(model);
 		//const res = await axios.post('https://localhost:8080/JEE_SPRINGBOOT_HIBERNATE_EXO/api/user/login', model, config);
-		res = await axiosInstance.post('user/login', model, httpConfig);
+		res = await instance.post('user/login', model, httpConfig);
 		res.data.user.token = res.data.token;
 		await setSessionData(res.data.user);
 		success = true;
@@ -78,7 +80,7 @@ export async function getBooksAction(): BookModel[] {
 	let res = {};
 	try{
 		//console.log(config());
-		res = await axiosInstance.get('books/all', httpConfig);
+		res = await instance.get('books/all', httpConfig);
 		success = true;
 		//return res.data;
 	} catch(err) {
@@ -99,7 +101,7 @@ export async function getBookAction(id: number): BookModel[] {
 	let res = {};
 	try{
 		//console.log(config());
-		res = await axiosInstance.get(`books/${id}`, httpConfig);
+		res = await instance.get(`books/${id}`, httpConfig);
 		success = true;
 		//return res.data;
 	} catch(err) {
@@ -124,7 +126,7 @@ export async function createBookAction(formData: BookModel): BookModel {
 	    	isbn: formData.isbn,
 	    	pagesNum: formData.pagesNum,
 	    };
-		res = await axiosInstance.post('books', model, httpConfig);
+		res = await instance.post('books', model, httpConfig);
 		success = true;
 	} catch (err) {
 		console.log(err);
@@ -151,7 +153,7 @@ export async function updateBookAction(id: number, formData: BookModel) {
 	    	isbn: formData.isbn,
 	    	pagesNum: formData.pagesNum,
 	    };
-		res = await axiosInstance.put(`books/${id}`, model, httpConfig);
+		res = await instance.put(`books/${id}`, model, httpConfig);
 		success = true;
 	} catch (err) {
 		console.log(err);
@@ -166,11 +168,12 @@ export async function updateBookAction(id: number, formData: BookModel) {
 }
 
 /*export async function deleteBookAction(id: number){
+	const instance = await axiosInstance();
 	const httpConfig = await config();
 	let success = false;
 	let res = {};
 	try{
-		res = await axiosInstance.delete(`books/${id}`, httpConfig);
+		res = await instance.delete(`books/${id}`, httpConfig);
 		success = true;
 	} catch (err){
 		console.log(err);
@@ -202,7 +205,7 @@ export async function createUserAction(formData: UserModel): UserModel {
 	    	password: formData.password,
 	    	roles: formData.roles
 	    };
-		res = await axiosInstance.post('user/signup', model, httpConfig);
+		res = await instance.post('user/signup', model, httpConfig);
 		//console.log(res);
 		if (res.data.code === 0)
 			success = true;

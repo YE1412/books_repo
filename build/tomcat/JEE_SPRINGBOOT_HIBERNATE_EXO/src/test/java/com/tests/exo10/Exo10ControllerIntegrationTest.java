@@ -51,7 +51,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = JeeSpringbootExo10Test.class, webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
-//@Import(Exo10ControllerIntegrationTestConfig.class)
+@Import(Exo10ControllerIntegrationTestConfig.class)
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
 public class Exo10ControllerIntegrationTest {
     

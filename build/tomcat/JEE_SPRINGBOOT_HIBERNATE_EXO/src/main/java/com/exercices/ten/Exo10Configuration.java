@@ -30,6 +30,7 @@ import static java.util.Locale.filter;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -48,6 +49,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
+@ConfigurationProperties(prefix="com.exercices.ten")
 @EnableJpaRepositories("com.exercices.ten.repository")
 @EntityScan("com.exercices.ten.entity")
 @EnableWebSecurity
@@ -59,8 +61,6 @@ import org.springframework.web.filter.CorsFilter;
 @AllArgsConstructor
 public class Exo10Configuration {
     private final JwtTokenFilter jwtTokenFilter;
-    @Value("${com.exercices.ten.front_webapp_host}")
-    private final String frontHost;
     
     @Bean
     public static PasswordEncoder passwordEncoder(){
@@ -95,7 +95,7 @@ public class Exo10Configuration {
     }
     
     @Bean
-    public CorsFilter corsFilter(){
+    public CorsFilter corsFilter(@Value("${com.exercices.ten.front-webapp-host:localhost}") String frontHost){
         UrlBasedCorsConfigurationSource src = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);

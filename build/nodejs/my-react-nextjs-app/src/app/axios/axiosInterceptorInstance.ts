@@ -1,5 +1,3 @@
-'use server'
-
 import axios from 'axios';
 
 const __HOST__ = process.env.WEBAPP_HOST !== undefined
