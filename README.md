@@ -4,7 +4,7 @@ back_port: 8080
 
 ######URL_TEST##################
 front_url: http://<FRONT_ADDR>(132.18.0.2):(3000-4200-5173)
-back_url: http://<BACK_HOST>:8081/JEE_SPRINGBOOT_HIBERNATE_EXO/
+back_url: http://<BACK_HOST>(172.18.0.4):8081/JEE_SPRINGBOOT_HIBERNATE_EXO/
 
 #########BDD####################
 bdd:mysql
