@@ -1,0 +1,15 @@
+.create-book-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+  
+.create-book-full-width {
+    width: 100%;
+}
+
+.create-book-form mat-form-field + mat-form-field {
+    margin-left: 8px;
+}

@@ -4,7 +4,7 @@ import { forwardRef, useState } from 'react';
 import { createBookAction } from '@/app/lib/actions';
 //import { useFormState } from 'react-dom';
 import styles from '@/app/ui/login.module.css';
-import { Input as NextUIInput, Button, InputProps, Breadcrumbs, BreadcrumbItem } from '@/app/lib/nextui';
+import { Input as NextUIInput, Button, InputProps, Breadcrumbs, BreadcrumbItem, Code, useDisclosure } from '@/app/lib/nextui';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import type { BookModel } from '@/app/lib/definitions';
 import { cloneElement } from 'react';
@@ -14,11 +14,13 @@ import { NewBookSchema } from '@/app/lib/data';
 import {
 	PlusCircleIcon
 } from '@/app/lib/icons';
-import {Code} from "@nextui-org/react";
+import BookCreateModal from '@/app/ui/modal';
 
 export function Form({defaultValues, children, className, submit}: {defaultValues: LoginRequest}) {
 	type InputsType = z.infer<typeof NewBookShema>;
-
+	const { isOpen, onOpen, onOpenChange, onClose} = useDisclosure();
+	const [modalPlacement, setModalPlacement] = useState("top");
+	var isModal = true;
 	const {
 		control,
 		handleSubmit,
@@ -31,11 +33,22 @@ export function Form({defaultValues, children, className, submit}: {defaultValue
 	const onSubmit: SubmitHandler<InputsType> = async (
 		data: InputsType
 	) => {
-		const res = await submit(data);
-		if (res !== undefined)
-			setMessage(res.message);
+		if (isModal)
+			onOpen();
+		else{
+			const res = await submit(data);
+			if (res !== undefined)
+				setMessage(res.message);
+		}
 	}
 
+	const changeModalState = () => {
+		//console.log(`Modal validation click !`);
+		onClose();
+		isModal = false;
+		handleSubmit(onSubmit)();
+	}
+	
 	return (
 		<>
 			{message !== null ? 
@@ -67,6 +80,12 @@ export function Form({defaultValues, children, className, submit}: {defaultValue
 						})
 					}
 			</form>
+			<BookCreateModal isOpen={isOpen}
+				onOpenChange={onOpenChange}
+				title="Book Creation Confirmation"
+				body="Are you sure to create this book ?"
+				type="book"
+				onValid={changeModalState}/>
 		</>
 	)	
 };

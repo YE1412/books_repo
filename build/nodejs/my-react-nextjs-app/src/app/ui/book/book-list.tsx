@@ -7,8 +7,9 @@ import axiosInstance from 'axios';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useUserContext } from '@/app/user-provider';
 import { ArrowPathIcon, TrashIcon } from '@/app/lib/icons';
-import {useAsyncList} from "@react-stately/data";
-import {Code} from "@nextui-org/react";
+import { useAsyncList } from "@react-stately/data";
+import { Code, useDisclosure } from "@/app/lib/nextui";
+import BookDeleteModal from '@/app/ui/modal';
 
 export default function BookTable(){
 	//const books = await fetchBooksData();
@@ -30,24 +31,12 @@ export default function BookTable(){
 		}
 		return { headers, method: "DELETE", mode: "no-cors" };
 	};
-	const handleDelete = async (id, userSession) => {
-		let success = false;
-		//console.log('Axios Instance in handleDelete function');
-		//console.log(axiosInstance);
-		//console.log('Book List trigger in handle Delete Function');
-		//console.log(changes);
-		try{
-			//await fetch(`http://localhost:8080/JEE_SPRINGBOOT_HIBERNATE_EXO/api/books/${id}`);
-			await axiosInstance.delete(`http://localhost:8080/JEE_SPRINGBOOT_HIBERNATE_EXO/api/books/${id}`, config(userSession));
-			success = true;
-		} catch(err) {
-			console.log(err);
-			//throw new Error(`Failed to delete book with id ${id}`);
-			setMessage(`Failed to delete book with id '${id}', remote server (back office) off !`);
-		} finally {
-			if (success){
-				await list.reload();
-			}
+	const handleDelete = async (id) => {
+		const res = await deleteBookAction(id);
+		if (res.message !== undefined){
+			setMessage(res.message);
+		} else if (res.code === 0){
+			await list.reload();
 		}
 	}
 	useEffect(() => {
@@ -139,7 +128,7 @@ export default function BookTable(){
 	    const end = start + rowsPerPage;
     	return list.items.slice(start, end);
   	}, [page, list.items]);
-  	const renderCell = React.useCallback((book, columnKey, sessionUser) => {
+  	const renderCell = React.useCallback((book, columnKey) => {
 		const cellValue = book[columnKey];
 		//console.log('User Session in callback function !');
 		//console.log(sessionUser);
@@ -147,7 +136,7 @@ export default function BookTable(){
 			case "actions":
 				return (
 					<>
-						<Button as={Link} href={`/book/${book['id']}/update`} color="primary" startContent={<ArrowPathIcon className="w-4"/>}>Update</Button> | <Button color="danger" onPress={() => handleDelete(book['id'], sessionUser)} startContent={<TrashIcon className="w-4"/>}>Delete</Button>
+						<Button as={Link} href={`/book/${book['id']}/update`} color="primary" startContent={<ArrowPathIcon className="w-4"/>}>Update</Button> | <Button color="danger" onPress={() => openModal(book["id"])} startContent={<TrashIcon className="w-4"/>}>Delete</Button>
 					</>
 				);
 				break;
@@ -156,6 +145,19 @@ export default function BookTable(){
 				break;
 		}
 	}, []);
+	const { isOpen, onOpen, onOpenChange, onClose} = useDisclosure();
+	const [modalPlacement, setModalPlacement] = useState("top");
+	const [bookIdToDelete, setBookIdToDelete] = useState(0);
+	const changeModalState = async (bookId) => {
+		//console.log(`Modal validation click deleting book ${bookId} !`);
+		onClose();
+		//isModal = false;
+		await handleDelete(bookId);
+	}
+	const openModal = (bookId) => {
+		setBookIdToDelete(bookId);
+		onOpen();
+	}
   	//console.log(page);
 	//console.log(books);
 	//console.log('Axios Instance in Component');
@@ -198,7 +200,7 @@ export default function BookTable(){
 		    				{(item) => (
 			    				<TableRow key={item.id}>
 			    				{
-			    					(columnKey) => <TableCell>{renderCell(item, columnKey, user)}</TableCell>
+			    					(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>
 			    				}
 			    				</TableRow>
 			    			)}
@@ -206,6 +208,13 @@ export default function BookTable(){
 		    		</Table>
 		    	</div>
 		    </div>
+		    <BookDeleteModal isOpen={isOpen}
+		    	onOpenChange={onOpenChange}
+		    	title="Deleting Book Confirmation"
+		    	body="Are you sure to delete this book ?"
+		    	bookId={bookIdToDelete}
+		    	type="book"
+		    	onValid={changeModalState} />
 		</>
 	)
 }

@@ -5,7 +5,7 @@ import { type LoginRequest, type LoginResponse } from '@/app/lib/definitions';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import axiosInstance from '@/app/axios/axiosInterceptorInstance';
-import type { LoginRequest, LoginResponse, BookModel, UserModel } from '@/app/lib/definitions';
+import type { LoginRequest, LoginResponse, BookModel, UserModel, UserFormResponse } from '@/app/lib/definitions';
 
 const instance = axiosInstance;
 
@@ -95,7 +95,7 @@ export async function getBooksAction(): BookModel[] {
 	}
 }
 
-export async function getBookAction(id: number): BookModel[] {
+export async function getBookAction(id: number): BookModel {
 	const httpConfig = await config();
 	let success = false;
 	let res = {};
@@ -111,6 +111,105 @@ export async function getBookAction(id: number): BookModel[] {
 	} finally {
 		if (success) {
 			return res.data;
+		}
+	}
+}
+
+export async function getUsersAction(): UserModel[] {
+	const httpConfig = await config();
+	let success = false;
+	let res = {};
+	try{
+		//console.log(config());
+		res = await instance.get('user/all', httpConfig);
+		success = true;
+		//return res.data;
+	} catch(err) {
+		console.log(err);
+		//await logoutAction();
+		//throw new Error('Failed to fetch books !');
+		return { message: 'Failed to fetch users, remote server (back office) off !' };
+	} finally {
+		if (success) {
+			return res.data;
+		}
+	}
+}
+
+export async function getUserAction(id: number): UserModel {
+	const httpConfig = await config();
+	let success = false;
+	let res = {};
+	try{
+		//console.log(config());
+		res = await instance.get(`user/${id}`, httpConfig);
+		success = true;
+		//return res.data;
+	} catch(err) {
+		console.log(err);
+		//throw new Error(`Failed to fetch book with id : ${id} !`);
+		return { message: `Failed to fetch user with id : '${id}', remote server (back office) off !` };
+	} finally {
+		if (success) {
+			return res.data;
+		}
+	}
+}
+
+export async function updateUserAction(id: number, formData: UserModel) {
+	const httpConfig = await config();
+	let success = false;
+	let res = {};
+	try {
+		const model = {
+			id: formData.id,
+			name: formData.name,
+			username: formData.username,
+			email: formData.email,
+			password: formData.password,
+			roles: formData.roles
+		};
+		res = await instance.put(`user/${id}`, model, httpConfig);
+		if (res.data.code === 0)
+			success = true;
+	} catch (err) {
+		console.log(err);
+		//throw new Error(`Failed to update book with id ${id} !`);
+		return { message: `Failed to update user profile with id '${id}', remote server (back office) off !`};
+	} finally {
+		if (success) {
+			var userSession = await getSessionData();
+			var userUpdated = res.data.user;
+			userSession.name = userUpdated.name;
+			userSession.username = userUpdated.username;
+			userSession.email = userUpdated.email;
+			userSession.password = userUpdated.password;
+			await setSessionData(userSession);
+			revalidatePath('/book/home');
+			redirect('/book/home');
+		} else {
+			return { message: res.data === undefined 
+				? 'Failed to update user profile, remote server (back office) off !'
+				:  res.data.message };
+		}
+	}
+}
+
+export async function updateUserRolesAction(id: number, formData: UserModel) {
+	const httpConfig = await config();
+	let success = false;
+	let res = {};
+	try {
+		res = await instance.put(`user/roles/${id}`, formData.roles, httpConfig);
+		success = true;
+	} catch (err) {
+		console.log(err);
+		//throw new Error(`Failed to update book with id ${id} !`);
+		return { message: `Failed to update user roles with id '${id}', remote server (back office) off !`};
+	} finally {
+		if (success) {
+			revalidatePath('/book/user/home');
+			redirect('/book/user/home');
 		}
 	}
 }
@@ -167,8 +266,7 @@ export async function updateBookAction(id: number, formData: BookModel) {
 	}
 }
 
-/*export async function deleteBookAction(id: number){
-	const instance = await axiosInstance();
+export async function deleteBookAction(id: number){
 	const httpConfig = await config();
 	let success = false;
 	let res = {};
@@ -180,12 +278,32 @@ export async function updateBookAction(id: number, formData: BookModel) {
 		//throw new Error(`Failed to delete book with id ${id} !`);
 	} finally {
 		if (success){
-			revalidatePath('/book/home');
+			return { code: 0 };
 		} else {
-			return { message: `Failed to delete book with id ${id} !`};
+			return { message: `Failed to delete book with id ${id}, remote server (back office) off !`, code: 1 };
 		}
 	}
-}*/
+}
+
+export async function deleteUserAction(id: number){
+	const httpConfig = await config();
+	let success = false;
+	let res = {};
+	try{
+		res = await instance.delete(`user/${id}`, httpConfig);
+		success = true;
+	} catch (err){
+		console.log(err);
+		//throw new Error(`Failed to delete book with id ${id} !`);
+	} finally {
+		if (success){
+			//revalidatePath('/book/user/home');
+			return { code: 0 };
+		} else {
+			return { message: `Failed to delete user with id ${id}, remote server (back office) off !`, code: 1};
+		}
+	}
+}
 
 export async function logoutAction(){
 	await deleteSessionData();
@@ -193,35 +311,48 @@ export async function logoutAction(){
 	redirect('/login');
 }
 
-export async function createUserAction(formData: UserModel): UserModel {
+export async function createUserAction(formData: UserModel){
 	const httpConfig = await config();
 	let res = {};
 	let success = false;
 	try {
 		const model = {
-	    	name: formData.name,
-	    	username: formData.username,
-	    	email: formData.email,
-	    	password: formData.password,
-	    	roles: formData.roles
-	    };
+    	name: formData.name,
+    	username: formData.username,
+    	email: formData.email,
+    	password: formData.password,
+    	roles: formData.roles
+    };
 		res = await instance.post('user/signup', model, httpConfig);
 		//console.log(res);
-		if (res.data.code === 0)
+		if (res.data.code === 0){
 			success = true;
-		else
+		}
+		else{
 			success = false;
+			throw res.data.message;
+		}
 	} catch (err) {
+		throw (err);
+	}
+	/*catch (err) {
+		console.log("Error !");
 		console.log(err);
-		return { message: 'Failed to insert new user, remote server (back office) off !' };
-		//throw new Error('Failed to create new user !');
-	} finally {
+		//return { message: 'Failed to insert new user, remote server (back office) off !' };
+		throw new Error('Failed to insert new user, remote server (back office) off !');
+	} */
+	finally {
 		if (success){
 			//console.log(res);
-				revalidatePath('/book/home');
-				redirect('/book/home');
-		} else {
-			return { message: res.data.message };
+				//revalidatePath('/login');
+				redirect('/login');
+		} 
+		else {
+			//console.log("Res !");
+			//console.log(res);
+			return { message: res.data === undefined 
+				? 'Failed to insert new user, remote server (back office) off !'
+				:  res.data.message };
 		}
 	}
 }

@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from "next";
-import CreateUserForm from '@/app/ui/book/user/user-form';
-import { fetchBookData } from '@/app/lib/data';
+import UserForm from '@/app/ui/book/user/user-form';
+//import { fetchBookData } from '@/app/lib/data';
 
 export const metadata: Metadata = {
   title: 'User Creation Page',
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default async function Page() {
 	return (
 		<>
-			<CreateUserForm />
+			<UserForm isNew={true} isProfil={false} />
 		</>
 	)
 }

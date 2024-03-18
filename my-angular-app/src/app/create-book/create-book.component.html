@@ -1,0 +1,56 @@
+<toolbar></toolbar>
+<section>
+    <mat-grid-list cols="4" rowHeight="100px">
+        <mat-grid-tile >
+        </mat-grid-tile>
+        <mat-grid-tile colspan="2">
+            <h1 class="mat-display-4">Create a new Book</h1>
+        </mat-grid-tile>
+        <mat-grid-tile >
+        </mat-grid-tile>
+    </mat-grid-list>
+    <form class="create-book-form" [formGroup]="newBookForm" (ngSubmit)="onSubmit()">
+        <mat-form-field class="create-book-full-width">
+            <mat-label>Title</mat-label>
+            <input matInput placeholder="Ex. Macbeth" formControlName="title" required/>
+            @if (title?.hasError('required')) {
+                <mat-error>You must enter a value in 'Title' field because 'Title' is <strong>required</strong> !</mat-error>
+            }
+        </mat-form-field>
+    
+        <mat-form-field class="create-book-full-width">
+            <mat-label>Author</mat-label>
+            <input matInput placeholder="Ex. W. Shakespeare" formControlName="author" />
+            @if (author?.hasError('required')) {
+                <mat-error>You must enter a value in 'Author' field because 'Author' is <strong>required</strong> !</mat-error>
+            }
+        </mat-form-field>
+    
+        <mat-form-field class="create-book-full-width">
+            <mat-label>Isbn</mat-label>
+            <input matInput #input formControlName="isbn" maxlength="13"/>
+            <mat-hint align="end">{{input.value.length}}/13</mat-hint>
+            @if (isbn?.hasError('required')) {
+                <mat-error>You must enter a value in 'Isbn' field because 'Isbn' is <strong>required</strong> !</mat-error>
+            }
+            @if (isbn?.hasError('forbiddenPagesNum')){
+                <mat-error>You must enter a valid isbn number in 'Isbn' field !</mat-error>
+            }
+        </mat-form-field>
+    
+        <mat-form-field class="create-book-full-width">
+            <mat-label>Page Numbers</mat-label>
+            <input matInput placeholder="Ex. 250" formControlName="pagesNum" required/>
+            @if (pagesNum?.hasError('required')) {
+                <mat-error>You must enter a value in 'Page Numbers' field because 'Page Numbers' is <strong>required</strong> !</mat-error>
+            }
+            @if (pagesNum?.hasError('forbiddenPagesNum')){
+                <mat-error>You must enter a valid number in 'Page Numbers' field !</mat-error>
+            }
+        </mat-form-field>
+    
+        <button mat-raised-button color="primary"  type="submit" [disabled]="!newBookForm.valid" class="ng-material-button " aria-label="Angular button with face icon">
+            Submit
+        </button>
+    </form>
+</section>

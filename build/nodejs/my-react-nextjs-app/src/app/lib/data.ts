@@ -6,9 +6,18 @@ export async function fetchBooksData(): BookModel[] {
 	return await Actions.getBooksAction();
 };
 
-export async function fetchBookData(id: number): BookModel[] {
+export async function fetchBookData(id: number): BookModel {
 	return await Actions.getBookAction(id);
 };
+
+export async function fetchUsersData(): UserModel[] {
+	return await Actions.getUsersAction();
+};
+
+export async function fetchUserData(id: number): UserModel {
+	return await Actions.getUserAction(id);
+};
+
 
 export async function fetchUserSessionRoles() : RoleModel[] | null {
 	const usr = await Actions.getSessionData();
@@ -59,3 +68,4 @@ export const UserCreationSchema = z.object({
 });
 
 export const NewUserSchema = UserCreationSchema.omit({id: true});
+export const UpdateUserRolesSchema = UserCreationSchema.omit({password: true});

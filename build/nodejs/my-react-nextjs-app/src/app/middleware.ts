@@ -9,10 +9,11 @@ export async function middleware(request: NextRequest) {
 	console.log("MiddleWare Action");
 	console.log(currentSession);
 	console.log(request.nextUrl.pathname);
+	/*If user is connected and destination doesn't start with '/book'*/
 	if (currentUser !== undefined && currentUser && !request.nextUrl.pathname.startsWith('/book')){
 		redirectUrl = new URL('/book/home', request.url);
 	}
-
+	/*If user isn't connected and destination doesn't start with '/login'*/
 	if (currentUser !== undefined && !currentUser && !request.nextUrl.pathname.startsWith('/login')){
 		redirectUrl = new URL('/login', request.url);
 	}

@@ -107,16 +107,17 @@ export default function NavButtons() {
 		};
 		updateConnectedAndIsAdmin();
 	}, [user]);
-	const links = connected ? LinksEndOnline() : LinksEndOffline();
-	//console.log(pathname);
+	const links = connected ? LinksEndOnline(user !== undefined && user ? user.id : 0) : LinksEndOffline();
+	//console.log(links);
 	return (
 		links.map((link, ind) => {
 			//console.log(link.href);
 			const LinkIcon = link.icon;
 			const linkHasAdminPrivileges = link.roles !== undefined && Array.prototype.indexOf.call(link.roles, 1) !== -1 ? true : false;
+			const linkHasUserPrivileges = link.roles !== undefined && Array.prototype.indexOf.call(link.roles, 2) !== -1 ? true : false;
 			//console.log(`Link ${link.name} has admin priviledge : ${linkHasAdminPrivileges}`);
-			
-			return ((connected && linkHasAdminPrivileges && isAdmin) || !linkHasAdminPrivileges || !connected || (connected && !linkHasAdminPrivileges))
+			//console.log(`Link ${link.name} has user priviledge : ${linkHasUserPrivileges}`);
+			return ((connected && linkHasAdminPrivileges && isAdmin) || !linkHasAdminPrivileges || !connected || (connected && linkHasUserPrivileges && !isAdmin))
 			? (
 				<NavbarItem key={ind}>
 					<LinkOrButton

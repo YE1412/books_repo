@@ -11,20 +11,27 @@ export async function middleware(request: NextRequest) {
 	//console.log("Current user");
 	//console.log(currentUser);
 	//console.log(request.cookies);
+	//console.log("Next URL");
 	//console.log(request.nextUrl.pathname);
 	//console.log(request.nextUrl.pathname.startsWith('/book'));
+
+	/*If user is connected and destination doesn't start with '/book'*/
 	if (currentSession !== undefined && currentUser !== null && !request.nextUrl.pathname.startsWith('/book') && request.nextUrl.pathname !== "/favicon.ico"){
 		//console.log("Redirecting to /book/home");
 		redirectUrl = new URL('/book/home', request.url);
 	}
-
+	/*If user isn't connected and destination doesn't start with '/login'*/
 	if (currentSession !== undefined && currentUser === null && !request.nextUrl.pathname.startsWith('/login')){
 		redirectUrl = new URL('/login', request.url);
 	}
-
-	if ((currentSession === undefined && request.nextUrl.pathname.startsWith('/book')) || (currentUser === null && request.nextUrl.pathname.startsWith('/book'))){
+	/*If user isn't connected and destination doesn't start with '/book/user/create' OR '/login' OR '/'*/
+	if ((currentSession === undefined && !request.nextUrl.pathname.startsWith('/book/user/create')) 
+		&& (currentUser === null && !request.nextUrl.pathname.startsWith('/book/user/create'))
+		&& (currentUser === null && !request.nextUrl.pathname.startsWith('/login'))
+		&& (currentUser === null && !request.nextUrl.pathname.startsWith('/'))){
 		redirectUrl = new URL('/login', request.url);
 	}
+
 	const newHeaders = new Headers(request.headers);
 	newHeaders.set("x-url", request.url);
 	if (currentSession !== undefined)
