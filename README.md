@@ -3,8 +3,8 @@ front_port: 3000
 back_port: 8080
 
 ######URL_TEST##################
-front_url: http://localhost:3000
-back_url: http://localhost:8080/JEE_SPRINGBOOT_HIBERNATE_EXO/
+front_url: http://<FRONT_ADDR>:(3000-4200-5173)
+back_url: http://<BACK_HOST>:8081/JEE_SPRINGBOOT_HIBERNATE_EXO/
 
 #########BDD####################
 bdd:mysql
