@@ -167,7 +167,7 @@ public class Exo10Controller {
                 usr.setId(u.getId());
                 usr.setEmail(u.getEmail());
                 usr.setName(u.getName());
-                usr.setPassword(u.getPassword());
+                usr.setPassword(passwordEncoder.encode(u.getPassword()));
                 usr.setUsername(u.getUsername());
                 usr.setRoles(formatRoles(u.getRoles()));
                 ubs.updateUser(id, usr);

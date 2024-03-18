@@ -26,13 +26,13 @@
 
 package com.exercices.ten;
 
-import static java.util.Locale.filter;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -49,7 +49,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
-@ConfigurationProperties(prefix="com.exercices.ten")
+@EnableConfigurationProperties(FrontConfiguration.class)
 @EnableJpaRepositories("com.exercices.ten.repository")
 @EntityScan("com.exercices.ten.entity")
 @EnableWebSecurity
@@ -61,6 +61,7 @@ import org.springframework.web.filter.CorsFilter;
 @AllArgsConstructor
 public class Exo10Configuration {
     private final JwtTokenFilter jwtTokenFilter;
+    private final FrontConfiguration frontConf;
     
     @Bean
     public static PasswordEncoder passwordEncoder(){
@@ -96,12 +97,17 @@ public class Exo10Configuration {
     
     @Bean
     public CorsFilter corsFilter(@Value("${com.exercices.ten.front-webapp-host:localhost}") String frontHost){
+//        System.err.println("Front Properties --");
+//        System.err.println("Front WebApp Host : "+frontConf.getFrontWebappHost());
+//        System.err.println("Front WebApp Port1 : "+frontConf.getFrontWebappPort1());
+//        System.err.println("Front WebApp Port2 : "+frontConf.getFrontWebappPort2());
+//        System.err.println("Front WebApp Port3 : "+frontConf.getFrontWebappPort3());
         UrlBasedCorsConfigurationSource src = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://"+frontHost+":4200");
-        config.addAllowedOrigin("http://"+frontHost+":5173");
-        config.addAllowedOrigin("http://"+frontHost+":3000");
+        config.addAllowedOrigin("http://"+frontConf.getFrontWebappHost()+":"+frontConf.getFrontWebappPort1());
+        config.addAllowedOrigin("http://"+frontConf.getFrontWebappHost()+":"+frontConf.getFrontWebappPort2());
+        config.addAllowedOrigin("http://"+frontConf.getFrontWebappHost()+":"+frontConf.getFrontWebappPort3());
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         src.registerCorsConfiguration("/**", config);
