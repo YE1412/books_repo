@@ -8,7 +8,7 @@ back_url: http://localhost:8080/JEE_SPRINGBOOT_HIBERNATE_EXO/
 
 #########BDD####################
 bdd:mysql
-spring.datasource.url=jdbc:mysql://localhost:3306/jee_springboot_hibernate_exo?zeroDateTimeBehavior=CONVERT_TO_NULL
+spring.datasource.url=jdbc:mysql://<BDD_HOST>:3306/jee_springboot_hibernate_exo?zeroDateTimeBehavior=CONVERT_TO_NULL
 spring.datasource.username=kali
 spring.datasource.password=kali
 
