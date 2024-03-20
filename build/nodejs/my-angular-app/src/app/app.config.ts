@@ -6,7 +6,7 @@ import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatPaginator } from '@angular/material/paginator';
-import { BookService, UserService } from '@app/service';
+import { BookService, UserService, ThemeService } from '@app/service';
 import { JwtInterceptor, ErrorInterceptor } from '@app/helpers';
 
 export const appConfig: ApplicationConfig = {
@@ -19,5 +19,6 @@ export const appConfig: ApplicationConfig = {
     MatPaginator, 
     UserService,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}]
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    ThemeService]
 };

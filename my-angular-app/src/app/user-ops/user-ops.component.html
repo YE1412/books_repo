@@ -1,0 +1,79 @@
+@if (opsType === 'new'){
+    <toolbar-login />
+}
+@if (opsType !== 'new'){
+    <toolbar />
+}
+<section>
+    <mat-grid-list cols="4" rowHeight="100px">
+        <mat-grid-tile >
+        </mat-grid-tile>
+        <mat-grid-tile colspan="2">
+            <h1 class="mat-display-4">{{title}}</h1>
+        </mat-grid-tile>
+        <mat-grid-tile >
+        </mat-grid-tile>
+    </mat-grid-list>
+    <form class="signup-form" [formGroup]="userForm">
+    	<mat-form-field class="signup-form-full-width">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Ex. Vincent" formControlName="name" />
+            @if (name?.hasError('required')){
+                <mat-error>You must enter a value in 'Name' field because it is <strong>required</strong> !</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field class="signup-form-full-width">
+            <mat-label>Username</mat-label>
+            <input matInput placeholder="Ex. Vince" formControlName="username" />
+            @if (username?.hasError('required')){
+                <mat-error>You must enter a value in 'Username' field because it is <strong>required</strong> !</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field class="signup-form-full-width">
+            <mat-label>Email</mat-label>
+            <input type="email" matInput placeholder="Ex. vince@gmail.com" formControlName="email" />
+            @if (email?.hasError('email') && !email?.hasError('required')){
+                <mat-error>You must enter a <strong>valid</strong> email !</mat-error>
+            }
+            @if (email?.hasError('required')){
+                <mat-error>You must enter a value in 'email' field because it is <strong>required</strong> !</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field class="signup-form-full-width">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" placeholder="Ex. admin" formControlName="password" />
+            @if (password?.hasError('required')){
+                <mat-error>You must enter a value in 'Password' field because it is <strong>required</strong> !</mat-error>
+            }
+            @if (password?.hasError('forbiddenPassword') && !password?.hasError('required')){
+                <mat-error>You must enter a valid 'Password' field must contain at least <strong>8</strong> characters !</mat-error>
+            }
+        </mat-form-field>
+
+        @if (opsType === 'roles'){
+            <mat-form-field class="signup-form-full-width">
+                <mat-label>Roles</mat-label>
+                <mat-select formControlName="roles" multiple>
+                @for (role of allRoles; track role) {
+                  <mat-option [value]="role.id">{{role.name === 'ROLE_ADMIN' ? 'Administrator' : 'Simple user'}}</mat-option>
+                }
+              </mat-select>
+                @if (roles?.hasError('required')){
+                    <mat-error>You must select at least one role because 'Roles' field is <strong>required</strong> !</mat-error>
+                }
+            </mat-form-field>
+        }
+
+        <button mat-raised-button color="primary"  (click)="openDialog()" [disabled]="!userForm.valid" class="ng-material-button " aria-label="Angular button with face icon">
+            <mat-icon>{{submitButtonIcon}}</mat-icon>
+            {{submitButtonText}}
+        </button>
+
+        @if (opsType === 'profile'){
+            <button mat-raised-button color="warn"  (click)="openDialog('deleteUser', 'Delete User Confirmation', 'Are you sure to delete your profile ?')" class="ng-material-button " aria-label="Angular button with face icon">
+                <mat-icon>delete</mat-icon>
+                Delete Profile
+            </button>
+        }
+    </form>
+</section>

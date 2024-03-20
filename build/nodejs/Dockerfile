@@ -18,6 +18,8 @@ COPY ./my-react-nextjs-app/ /web/
 # Uncomment this to enable REACT APP
 RUN npm install next react react-dom
 
+# Uncomment this to enable ANGULAR APP
+#RUN npm install @angular/cli
 
 RUN npm install
 

@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { UserService } from '@app/service';
 import { UserModel, RoleModel } from '@app/models';
+import { ThemeToggleComponent } from '@app/theme-toggle/theme-toggle.component';
 
 @Component ({
     selector: 'toolbar',
@@ -19,6 +20,7 @@ import { UserModel, RoleModel } from '@app/models';
         MatMenuModule,
         RouterLink,
         RouterLinkActive,
+        ThemeToggleComponent
     ]
 })
 
@@ -26,6 +28,7 @@ export class ToolbarComponent {
     user: UserModel | null;
     constructor(private _userService: UserService){
         _userService.user.subscribe((x:UserModel | null) => this.user = x);
+        //_userService.user.subscribe((x:string | null) => x);
     }
 
     get isAdmin() {

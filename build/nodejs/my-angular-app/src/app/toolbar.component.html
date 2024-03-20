@@ -14,8 +14,8 @@
                     <a routerLink="/new-book" routerLinkActive="active" ariaCurrentWhenActive="page">Create Book</a>
                 </button>
                 <button mat-menu-item>
-                    <mat-icon>person_add</mat-icon>
-                    <a routerLink="/signup" routerLinkActive="active" ariaCurrentWhenActive="page">Create User</a>
+                    <mat-icon>group</mat-icon>
+                    <a routerLink="/users" routerLinkActive="active" ariaCurrentWhenActive="page">Users</a>
                 </button>
             }
             <button mat-menu-item (click)="logout()">
@@ -24,6 +24,7 @@
             </button>
         </mat-menu>
         <span>Books App</span>
+        <app-theme-toggle />
         <button mat-button class="ng-material-icon home-icon" aria-label="Angular icon-button with home icon">
             <mat-icon>home</mat-icon>
             <a mat-button routerLink="/home" routerLinkActive="active" ariaCurrentWhenActive="page">Home</a>
@@ -34,10 +35,14 @@
                 <a mat-button routerLink="/new-book" routerLinkActive="active" ariaCurrentWhenActive="page">Create Book</a>
             </button>
             <button mat-button class="ng-material-icon person-add-icon" aria-label="Angular icon-button with person-add icon">
-                <mat-icon>person_add</mat-icon>
-                <a mat-button routerLink="/signup" routerLinkActive="active" ariaCurrentWhenActive="page">Create User</a>
+                <mat-icon>group</mat-icon>
+                <a mat-button routerLink="/users" routerLinkActive="active" ariaCurrentWhenActive="page">Users</a>
             </button>
         }
+        <button mat-button class="ng-material-icon logout-icon" aria-label="Angular icon-button with logout icon">
+            <mat-icon>account_circle</mat-icon>
+            <a mat-button [routerLink]="['/user', user?.id, 'profile']" routerLinkActive="active" ariaCurrentWhenActive="page">Profile</a>
+        </button>
         <button mat-button class="ng-material-icon logout-icon" aria-label="Angular icon-button with logout icon" (click)="logout()">
             <mat-icon>logout</mat-icon>
             Logout

@@ -1,6 +1,9 @@
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
 import { Component } from '@angular/core';
+import { ThemeToggleComponent } from '@app/theme-toggle/theme-toggle.component';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component ({
     selector: 'toolbar-login',
@@ -10,6 +13,10 @@ import { Component } from '@angular/core';
     imports: [
         MatIconModule,
         MatToolbarModule,
+        ThemeToggleComponent,
+        MatButtonModule,
+        RouterLink,
+        RouterLinkActive
     ]
 })
 

@@ -1,14 +1,15 @@
-import { Component, AfterViewInit, ViewChild, OnInit } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { BookService, UserService } from '@app/service';
+import { BookService, UserService, ThemeService } from '@app/service';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
-import { ToolbarComponent } from '../toolbar.component';
+import { ToolbarComponent } from '@app/toolbar.component';
 import { BookModel, UserModel, RoleModel } from '@app/models';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -27,14 +28,21 @@ import { BookModel, UserModel, RoleModel } from '@app/models';
 export class HomeComponent implements OnInit, AfterViewInit{
   public books: BookModel[] = [];
   user: UserModel | null = null;
-  constructor(public bookService: BookService, private _userService: UserService, private _router: Router, private _route: ActivatedRoute, private _snackbar: MatSnackBar){
-    _userService.user.subscribe((x:UserModel | null) => this.user = x);
+  constructor(public bookService: BookService, 
+    private _userService: UserService, 
+    private _router: Router, 
+    private _route: ActivatedRoute, 
+    private _snackbar: MatSnackBar,
+    @Inject(PLATFORM_ID) private platformId: object,
+    private themeService: ThemeService){
+      _userService.user.subscribe((x:UserModel | null) => this.user = x);
   }
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
-  messages : string[] = [];
+  messages: string[] = [];
   displayedColumns: string[] = [];
   dataSource = new MatTableDataSource<BookModel>();
   private getAllBooks(): void{
@@ -50,16 +58,12 @@ export class HomeComponent implements OnInit, AfterViewInit{
   
   ngOnInit(){
     this.getAllBooks();
-    // console.log(history.state);
-    /*if (this._route.snapshot.queryParams['messages'] !== undefined 
-      && this._route.snapshot.queryParams['messages'].length){
-      this.messages = this._route.snapshot.queryParams['messages'];
-      // console.log(this.messages);
-      this.openSnackBar(this.messages);
-    }*/
-    if (history !== undefined && history && history.state['messages'] !== undefined && history.state['messages'].length){
-      this.messages = history.state['messages'];
-      this.openSnackBar(this.messages);
+    if (isPlatformBrowser(this.platformId))
+    {
+      if (history !== undefined && history && history.state['messages'] !== undefined && history.state['messages'].length){
+        this.messages = history.state['messages'];
+        this.openSnackBar(this.messages);
+      }
     }
     this.displayedColumns = this.isAdmin ? ['id', 'title', 'author', 'isbn', 'pagesNum', 'actions'] : ['id', 'title', 'author', 'isbn', 'pagesNum'];
     // console.log(this.books);
@@ -105,6 +109,10 @@ export class HomeComponent implements OnInit, AfterViewInit{
         });
     }
     return this.user !== null && hasAdminRole;
+  }
+
+  get isDark() {
+    return this.themeService.isDarkMode();
   }
 }
 
