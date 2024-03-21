@@ -1,0 +1,37 @@
+<toolbar-login></toolbar-login>
+<section>
+    <mat-grid-list cols="4" rowHeight="100px">
+        <mat-grid-tile >
+        </mat-grid-tile>
+        <mat-grid-tile colspan="2">
+            <h1 class="mat-display-4">Login</h1>
+        </mat-grid-tile>
+        <mat-grid-tile >
+        </mat-grid-tile>
+    </mat-grid-list>
+    <div>
+        <strong>Normal User</strong> - U: user P: user<br />
+        <strong>Administrator</strong> - U: admin P: admin<br />
+    </div>
+    <form class="login-form" [formGroup]="newLoginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field class="login-form-full-width">
+            <mat-label>Username Or Email</mat-label>
+            <input matInput placeholder="Ex. admin" formControlName="usernameOrEmail"/>
+            @if (usernameOrEmail?.hasError('required')){
+                <mat-error>You must enter a value in 'Username Or Email' field because it is <strong>required</strong> !</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field class="login-form-full-width">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" placeholder="Ex. admin" formControlName="password"/>
+            @if (password?.hasError('required')){
+                <mat-error>You must enter a value in 'Password' field because it is <strong>required</strong> !</mat-error>
+            }
+        </mat-form-field>
+
+        <button mat-raised-button color="primary"  type="submit" [disabled]="!newLoginForm.valid" class="ng-material-button " aria-label="Angular button with face icon">
+            <mat-icon>login</mat-icon>
+            Login
+        </button>
+    </form>
+</section>

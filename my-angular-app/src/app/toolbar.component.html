@@ -1,0 +1,52 @@
+<p>
+    <mat-toolbar color="primary">
+        <button mat-icon-button [matMenuTriggerFor]="menu" class="ng-material-icon" aria-label="Angular Material Icon">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+                <mat-icon>home</mat-icon>
+                <a routerLink="/home" routerLinkActive="active" ariaCurrentWhenActive="page">Home</a>
+            </button>
+            @if (isAdmin) {
+                <button mat-menu-item>
+                    <mat-icon>book</mat-icon>
+                    <a routerLink="/new-book" routerLinkActive="active" ariaCurrentWhenActive="page">Create Book</a>
+                </button>
+                <button mat-menu-item>
+                    <mat-icon>group</mat-icon>
+                    <a routerLink="/users" routerLinkActive="active" ariaCurrentWhenActive="page">Users</a>
+                </button>
+            }
+            <button mat-menu-item (click)="logout()">
+                <mat-icon>logout</mat-icon>
+                Logout
+            </button>
+        </mat-menu>
+        <span>Books App</span>
+        <app-theme-toggle />
+        <button mat-button class="ng-material-icon home-icon" aria-label="Angular icon-button with home icon">
+            <mat-icon>home</mat-icon>
+            <a mat-button routerLink="/home" routerLinkActive="active" ariaCurrentWhenActive="page">Home</a>
+        </button>
+        @if (isAdmin) {
+            <button mat-button class="ng-material-icon book-icon" aria-label="Angular icon-button with book icon">
+                <mat-icon>book</mat-icon>
+                <a mat-button routerLink="/new-book" routerLinkActive="active" ariaCurrentWhenActive="page">Create Book</a>
+            </button>
+            <button mat-button class="ng-material-icon person-add-icon" aria-label="Angular icon-button with person-add icon">
+                <mat-icon>group</mat-icon>
+                <a mat-button routerLink="/users" routerLinkActive="active" ariaCurrentWhenActive="page">Users</a>
+            </button>
+        }
+        <button mat-button class="ng-material-icon logout-icon" aria-label="Angular icon-button with logout icon">
+            <mat-icon>account_circle</mat-icon>
+            <a mat-button [routerLink]="['/user', user?.id, 'profile']" routerLinkActive="active" ariaCurrentWhenActive="page">Profile</a>
+        </button>
+        <button mat-button class="ng-material-icon logout-icon" aria-label="Angular icon-button with logout icon" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            Logout
+        </button>
+        <!-- <span class="ng-material-spacer"></span> -->
+    </mat-toolbar>
+</p>
