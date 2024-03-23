@@ -71,6 +71,9 @@
 			router.push("/")
 		}
 	}
+	/*const toggleDarkMode= () => {
+		isDark.value = !isDark.value
+	}*/
 </script>
 
 <template>
@@ -103,6 +106,13 @@
 			</v-list-item>
 		</v-list>
       	<v-spacer></v-spacer>
+      	<!-- <v-btn class="text-button" :prepend-icon="isDark ? 'fas fa-sun' : 'fas fa-moon'" variant="text" @click="toggleDarkMode">
+      	</v-btn> -->
+      	<v-switch
+      		v-model="isDark"
+      		hide-details
+      		inset>
+      	</v-switch>
       	<v-list class="transparent-body">
 			<v-list-item
 				v-for="(item, i) in buttons"

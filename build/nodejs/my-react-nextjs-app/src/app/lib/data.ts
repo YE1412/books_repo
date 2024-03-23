@@ -25,7 +25,7 @@ export async function fetchUserSessionRoles() : RoleModel[] | null {
 	return usr !== null ? usr.roles : null;
 };
 
-export async function fetchUserSession() : RoleModel[] | null {
+export async function fetchUserSession() : UserModel | null {
 	const usr = await Actions.getSessionData();
 	return usr !== null ? usr : null;
 };
