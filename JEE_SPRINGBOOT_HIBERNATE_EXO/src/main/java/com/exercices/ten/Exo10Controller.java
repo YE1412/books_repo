@@ -27,33 +27,20 @@
 package com.exercices.ten;
 
 import com.exercices.ten.entity.Book;
-import com.exercices.ten.entity.RoleUser;
 import com.exercices.ten.entity.UserBook;
 import com.exercices.ten.otherclass.LoginDTO;
 import com.exercices.ten.otherclass.SignUpDTO;
 import com.exercices.ten.otherclass.UserFormRequest;
 import com.exercices.ten.otherclass.UserFormResponse;
 import com.exercices.ten.service.BookService;
-import com.exercices.ten.service.RoleUserService;
 import com.exercices.ten.service.UserBookService;
-import com.exercices.ten.service.UserRoleDetails;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashSet;
+import com.exercices.ten.treatments.UserTreatments;
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -67,13 +54,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class Exo10Controller {
     private static final String BOOK_API_BASE_PATH = "/api/";
-    private final AuthenticationManager am;
+    private final UserTreatments usrTreat;
+    //private final AuthenticationManager am;
     private final BookService bs;
     private final UserBookService ubs;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtTokenUtil jwtTokenUtil;
-    private final UserRoleDetails uds;
-    private final RoleUserService rus;
+    //private final PasswordEncoder passwordEncoder;
+    //private final JwtTokenUtil jwtTokenUtil;
+    //private final UserRoleDetails uds;
+    //private final RoleUserService rus;
     
     @GetMapping(value="/")
     public String welcome(){
@@ -81,65 +69,13 @@ public class Exo10Controller {
     }
 //    @CrossOrigin(origins = {"http://localhost:4200", "http://localhost:5173", "http://localhost:3000"})
     @PostMapping(value=BOOK_API_BASE_PATH + "user/login")
-    public ResponseEntity<UserFormResponse> getUser(@RequestBody final LoginDTO login) throws URISyntaxException{
-//        String pass = passwordEncoder.encode(login.getPassword());
-        UserFormResponse ret = new UserFormResponse();
-        try{
-            Authentication authentication = am.authenticate(new UsernamePasswordAuthenticationToken(login.getUsernameOrEmail(), login.getPassword()));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            User user = (User) uds.loadUserByUsername(login.getUsernameOrEmail());
-            UserBook ub = ubs.login(login.getUsernameOrEmail(), login.getUsernameOrEmail(), login.getPassword());
-            String tok = jwtTokenUtil.generateToken(user);
-            ret.setUser(ub);
-            ret.setMessage("Login success !");
-            ret.setCode(0);
-            ret.setToken(tok);
-            HttpHeaders heads = new HttpHeaders();
-            heads.add("Authorization", tok);
-            return ResponseEntity.created(new URI(BOOK_API_BASE_PATH))
-            .headers(heads)
-            .body(ret);
-        }
-        catch(BadCredentialsException ex){
-            ret.setUser(null);
-            ret.setMessage("Error while Login - Bad credentials !");
-            ret.setCode(1);
-            ret.setToken(null);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ret);
-        }
-        
+    public ResponseEntity<UserFormResponse> getUser(@RequestBody final LoginDTO login){
+        return (ResponseEntity<UserFormResponse>) usrTreat.loginTreatment(login);
     }
-    
-    private Set<RoleUser> formatRoles(Set<String> roles){
-        Set<RoleUser> ret = new HashSet<>();
-        for(String role:roles){
-            RoleUser r = rus.getRole(Long.valueOf(role));
-            ret.add(r);
-        }
-        return ret;
-    }
-//    @CrossOrigin(origins = {"http://localhost:4200", "http://localhost:5173", "http://localhost:3000"})
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+
     @PostMapping(value=BOOK_API_BASE_PATH + "user/signup")
     public UserFormResponse newUser(@RequestBody final SignUpDTO signUp){
-        UserFormResponse ret = new UserFormResponse();
-        if (!ubs.exists(signUp.getUsername(), signUp.getEmail())){
-                // Creating UserBook Object
-                UserBook b = new UserBook();
-                b.setName(signUp.getName());
-                b.setUsername(signUp.getUsername());
-                b.setEmail(signUp.getEmail());
-                b.setPassword(passwordEncoder.encode(signUp.getPassword()));
-                Set<RoleUser> roles = formatRoles(signUp.getRoles());
-                b.setRoles(roles);
-                ret.setUser(ubs.newUserBook(b));
-                ret.setMessage("User added successfully !");
-                ret.setCode(0);
-                return ret;
-        }
-        ret.setMessage("Error while adding new user email/username already exists !");
-        ret.setCode(1);
-        return ret;
+        return (UserFormResponse) usrTreat.signUpTtreatment(signUp);
     }
     
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -157,51 +93,13 @@ public class Exo10Controller {
     @PreAuthorize("hasAuthority('ROLE_ADMIN') OR hasAuthority('ROLE_USER')")
     @PutMapping(value=BOOK_API_BASE_PATH + "user/{id}")
     public UserFormResponse updateUser(@PathVariable Long id, @RequestBody final UserFormRequest u){
-        UserFormResponse ret = new UserFormResponse();
-        if (ubs.findUser(id) != null){
-            UserBook user = ubs.getByUsernameOrEmail(u.getUsername(), u.getEmail());
-//            System.out.println("Users");
-//            System.out.println(users);
-            if (user == null || user.getId().equals(id)){
-                UserBook usr = new UserBook(); 
-                usr.setId(u.getId());
-                usr.setEmail(u.getEmail());
-                usr.setName(u.getName());
-                usr.setPassword(passwordEncoder.encode(u.getPassword()));
-                usr.setUsername(u.getUsername());
-                usr.setRoles(formatRoles(u.getRoles()));
-                ubs.updateUser(id, usr);
-                ret.setCode(0);
-                ret.setMessage("User successfully updated !");
-                ret.setUser(usr);
-                return ret;
-            } else {
-                ret.setMessage("Error while updating user, username/email already exists !");
-                ret.setCode(1);
-                return ret;
-            }
-        }
-        ret.setMessage("Error while updating user, user doesn't exist !");
-        ret.setCode(1);
-        return ret;
+        return (UserFormResponse) usrTreat.updateUserTreatment(id, u);
     }
     
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PutMapping(value=BOOK_API_BASE_PATH + "user/roles/{id}")
     public UserFormResponse updateUserRoles(@PathVariable Long id, @RequestBody final Set<String> roles){
-        UserFormResponse ret = new UserFormResponse();
-        UserBook u = ubs.findUser(id);
-        if (u != null){
-            u.setRoles(formatRoles(roles));
-            ubs.updateUser(id, u);
-            ret.setCode(0);
-            ret.setMessage("User successfully updated !");
-            ret.setUser(u);
-            return ret;
-        }
-        ret.setMessage("Error while updating user, user doesn't exist !");
-        ret.setCode(1);
-        return ret;
+        return (UserFormResponse) usrTreat.updateUserRolesTreatment(id, roles);
     }
     
     @PreAuthorize("hasAuthority('ROLE_ADMIN') OR hasAuthority('ROLE_USER')")

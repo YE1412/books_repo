@@ -35,7 +35,10 @@ const rolesRules = ref([
 const message = ref(null)
 const formAction = computed(() => {
 	if (props !== undefined && props.idUser > 0){
-		return 'update'
+		if (props.profile)
+			return 'profile'
+		else
+			return 'update'
 	} else {
 		return 'insert'
 	}
@@ -210,7 +213,10 @@ const actions = async (e, action) => {
 		} finally {
 			if (success){
 				//console.log(res);
-				router.push({path: '/users/home', query: {message: res.data.message}})
+				if (action === 'update')
+					router.push({path: '/users/home', query: {message: res.data.message}})
+				else
+					router.push({path: '/books/home', query: {message: res.data.message}})
 			} else {
 				message.value = res.data.message
 			}
