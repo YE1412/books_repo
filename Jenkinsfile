@@ -2,7 +2,7 @@
 node {
    
    stage('clone') {
-            checkout scm
+         checkout scm
    }
 
    stage('Build Docker Image') {  
