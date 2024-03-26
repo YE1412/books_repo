@@ -7,9 +7,9 @@ node {
 
    stage('Build Docker Image') {  
       steps{ 
-         cd './build/'                    
+         //cd './build/'                    
          //sh 'docker-compose up --build'     
-         echo 'Docker-compose-build Build Image Completed'                
+            echo 'Docker-compose-build Build Image Completed'                
          }           
    }
    
