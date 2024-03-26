@@ -1,15 +1,15 @@
 
 node {
-   stages{ 
-      stage('clone') {
-                  checkout scm
-      }
-
-      stage('Build Docker Image') {  
-         steps{                     
-            sh 'cd ./build/ && docker-compose up --build'     
-            echo 'Docker-compose-build Build Image Completed'                
-            }           
-      }
+   
+   stage('clone') {
+               checkout scm
    }
+
+   stage('Build Docker Image') {  
+      steps{                     
+         sh 'cd ./build/ && docker-compose up --build'     
+         echo 'Docker-compose-build Build Image Completed'                
+         }           
+   }
+   
 }
