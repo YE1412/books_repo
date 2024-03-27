@@ -24,7 +24,7 @@ services:
   db-server:
     container_name: mysql
     image: 'mysql'
-    user: "jenkins:jenkins"
+#    user: "jenkins:jenkins"
     networks:
       custom_net:
         ipv4_address: 172.18.0.3
@@ -33,6 +33,7 @@ services:
     volumes:
       - ./dbData:/var/lib/mysql
       - ./mysql:/docker-entrypoint-initdb.d/:ro
+    command: chown -R jenkins:jenkins /var/lib/mysql
  #   command: --general-log=ON --general-log-file=/var/log/mysql/mysql.log --log-error=/var/log/mysql/mysql_error.log
     environment:
       MYSQL_ROOT_PASSWORD: 1234
