@@ -30,7 +30,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./dbData:/var/lib/mysql
+      - ./dbData:/var/lib/mysql:rw
       - ./mysql:/docker-entrypoint-initdb.d/:ro
  #   command: --general-log=ON --general-log-file=/var/log/mysql/mysql.log --log-error=/var/log/mysql/mysql_error.log
     environment:
