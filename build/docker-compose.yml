@@ -32,7 +32,7 @@ services:
     volumes:
       - ./dbData:/var/lib/mysql
       - ./mysql:/docker-entrypoint-initdb.d/:ro
-    command: --general-log=ON --general-log-file=/var/log/mysql/mysql.log --log-error=/var/log/mysql/mysql_error.log
+ #   command: --general-log=ON --general-log-file=/var/log/mysql/mysql.log --log-error=/var/log/mysql/mysql_error.log
     environment:
       MYSQL_ROOT_PASSWORD: 1234
 
