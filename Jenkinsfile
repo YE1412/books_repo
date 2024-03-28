@@ -28,7 +28,7 @@ node {
       docker.withRegistry('https://registry.gitlab.com', 'reg1') { 
       def img = docker.image(IMAGE)
       img.push 'latest'
-      img.push()
+      // img.push()
       
       }
    }
