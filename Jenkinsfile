@@ -1,7 +1,7 @@
 
 node {
-    def registryProjet='registry.gitlab.com/plaga1/projet_tomcat-nodejs'
-    def IMAGE="${registryProjet}:version-${env.BUILD_ID}"
+   //  def registryProjet='registry.gitlab.com/plaga1/projet_tomcat-nodejs'
+   //  def IMAGE="${registryProjet}:version-${env.BUILD_ID}"
    
    stage('clone') {
          checkout scm
@@ -9,9 +9,8 @@ node {
 
    stage('Build Docker Image') {  
       //steps{ 
-         //sh 'cd ./build/'                    
-         sh 'cd ./build/'
-         sh 'docker-compose stop && docker-compose rm'
+         //sh 'cd ./build/'
+         sh 'cd ./build/ && docker-compose stop && docker-compose rm'
          sh 'docker rmi -f $(docker images -aq)'
          sh 'docker-compose up --build -d'     
          // echo 'Docker-compose-build Build Image Completed'                
@@ -25,14 +24,11 @@ node {
           sh 'docker ps'
    }
     
-   stage('Push') {
-      docker.withRegistry('https://registry.gitlab.com', 'reg1') { 
-      img.push 'latest'
-      img.push()
+   // stage('Push') {
+   //    docker.withRegistry('https://registry.gitlab.com', 'reg1') { 
+   //    img.push 'latest'
+   //    img.push()
       
-      }
-   }
-
-
-   
+   //    }
+   // }
 }
