@@ -6,6 +6,10 @@ node {
          checkout scm
    }
 
+def img = stage('Build') {
+          docker.build("$IMAGE",  '.')
+   }
+
    stage('Build Docker Image') {  
       //steps{ 
          //sh 'cd ./build/'
