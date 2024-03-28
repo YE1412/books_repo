@@ -15,6 +15,9 @@ node {
          // echo 'Docker-compose-build Build Image Completed'                
        //}           
    }
+    def img = stage('Build') {
+          docker.build("$IMAGE",  '.')
+   }
 
    stage('Test') {
           sh 'docker images'
@@ -22,12 +25,13 @@ node {
           sh 'netstat -ntaup'
           sh 'sleep 15s'
           sh 'docker ps'
+          sh 'docker pull'
    }
     
    stage('Push') {
       docker.withRegistry('https://registry.gitlab.com', 'reg1') { 
-      def img = docker.image(IMAGE)
-      // img.push 'latest'
+      // def img = docker.image(IMAGE)
+      img.push 'latest'
       img.push()
       
       }
