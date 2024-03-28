@@ -1,5 +1,5 @@
 node {
-    def registryProjet='registry.gitlab.com/plaga1/projet_tomcat-nodejs'
+    def registryProjet='registry.gitlab.com/plaga1/presentations-jenkins'
     def IMAGE="${registryProjet}:version-${env.BUILD_ID}"
    
    stage('clone') {
