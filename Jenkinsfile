@@ -1,6 +1,7 @@
 node {
     def registryProjet='registry.gitlab.com/plaga1/presentations-jenkins'
     def IMAGE="${registryProjet}:version-${env.BUILD_ID}"
+    def img = docker.image(IMAGE)
    
    stage('clone') {
          checkout scm
@@ -22,13 +23,12 @@ node {
           sh 'netstat -ntaup'
           sh 'sleep 15s'
           sh 'docker ps'
-          sh 'docker pull'
+         //  sh 'docker pull'
 
    }
 
     
    stage('Push') {
-      def img = docker.image(IMAGE)
       docker.withRegistry('https://registry.gitlab.com', 'reg1') { 
       img.push 'latest'
       img.push()
