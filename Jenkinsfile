@@ -6,10 +6,6 @@ node {
          checkout scm
    }
 
-def img = stage('Build') {
-          docker.build("$IMAGE",  '.')
-   }
-
    stage('Build Docker Image') {  
       //steps{ 
          //sh 'cd ./build/'
@@ -21,6 +17,7 @@ def img = stage('Build') {
    }
 
    stage('Test') {
+          sh 'docker images'
           sh 'docker ps'
           sh 'netstat -ntaup'
           sh 'sleep 15s'
@@ -29,6 +26,7 @@ def img = stage('Build') {
     
    stage('Push') {
       docker.withRegistry('https://registry.gitlab.com', 'reg1') { 
+      def img = docker.image(IMAGE)
       img.push 'latest'
       img.push()
       
