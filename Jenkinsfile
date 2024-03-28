@@ -11,8 +11,8 @@ node {
       //steps{ 
          //sh 'cd ./build/'
          sh 'cd ./build/ && docker-compose stop && docker-compose rm'
-         sh 'docker rmi -f $(docker images -aq)'
-         sh 'docker-compose up --build -d'     
+         sh 'cd ./build/ && docker rmi -f $(docker images -aq)'
+         sh 'cd ./build/ && docker-compose up --build -d'     
          // echo 'Docker-compose-build Build Image Completed'                
        //}           
    }
