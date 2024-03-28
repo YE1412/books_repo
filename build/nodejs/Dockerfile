@@ -8,15 +8,15 @@ ENV WEBAPP_HOST $BACK_HOST
 ENV BACKOFF_PORT $BACK_PORT
 
 # Uncomment this to enable REACT APP
-COPY ./my-react-nextjs-app/ /web/
+#COPY ./my-react-nextjs-app/ /web/
 
 # Uncomment this to enable VUEJS APP
-#COPY ./my-vue-app/ /web/
-#RUN echo "VITE_WEBAPP_HOST=$WEBAPP_HOST\nVITE_BACKOFF_PORT=$BACKOFF_PORT" > .env
-#RUN npm install vite
+COPY ./my-vue-app/ /web/
+RUN echo "VITE_WEBAPP_HOST=$WEBAPP_HOST\nVITE_BACKOFF_PORT=$BACKOFF_PORT" > .env
+RUN npm install vite
 
 # Uncomment this to enable REACT APP
-RUN npm install next react react-dom
+#RUN npm install next react react-dom
 
 # Uncomment this to enable ANGULAR APP
 #RUN npm install @angular/cli
@@ -24,7 +24,7 @@ RUN npm install next react react-dom
 RUN npm install
 
 # Uncomment this to enable VUEJS APP
-#CMD ["npm", "run", "dev", "--", "--host"]
+CMD ["npm", "run", "dev", "--", "--host"]
 
 # Uncomment this to enable REACT APP
-CMD ["npm", "run", "dev"]
+#CMD ["npm", "run", "dev"]
