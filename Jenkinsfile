@@ -1,7 +1,7 @@
 node {
-    def registryProjet='registry.gitlab.com/plaga1/presentations-jenkins'
-    def IMAGE="${registryProjet}:version-${env.BUILD_ID}"
-    def img = docker.image(IMAGE)
+   //  def registryProjet='registry.gitlab.com/plaga1/presentations-jenkins'
+   //  def IMAGE="${registryProjet}:version-${env.BUILD_ID}"
+   //  def img = docker.image(IMAGE)
    
    stage('clone') {
          checkout scm
@@ -28,11 +28,11 @@ node {
    }
 
     
-   stage('Push') {
-      docker.withRegistry('https://registry.gitlab.com', 'reg1') { 
-      img.push 'latest'
-      img.push()
+   // stage('Push') {
+   //    docker.withRegistry('https://registry.gitlab.com', 'reg1') { 
+   //    img.push 'latest'
+   //    img.push()
       
-      }
-   }
+   //    }
+   // }
 }
