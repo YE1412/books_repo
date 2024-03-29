@@ -4,3 +4,7 @@
 a {
     text-decoration: none;
 }
+
+.inline-flex-displayed{
+    display: inline-flex;
+}

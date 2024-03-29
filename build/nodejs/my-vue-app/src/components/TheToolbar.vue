@@ -111,7 +111,13 @@
       	<v-switch
       		v-model="isDark"
       		hide-details
-      		inset>
+      		inset
+      		false-icon="fas fa-sun"
+      		true-icon="fas fa-moon"
+      		>
+      		<template v-slot:append>
+      			
+      		</template>
       	</v-switch>
       	<v-list class="transparent-body">
 			<v-list-item
