@@ -182,7 +182,7 @@ export class UserOpsComponent implements OnInit, OnDestroy{
     var idForm = this.opsType === 'profile' ? this.user!.id : this.opsType === 'roles' ? this.id : undefined;
     var formattedRole = rolesForm.map(r => r.toString());
     var u = new UserRequestModel(nameForm, usernameForm, emailForm, passwordForm, formattedRole, idForm);
-    console.log(u);
+    //console.log(u);
     if (this.opsType === 'new'){
       this.userService.addUser(u)
         .subscribe((res) => {

@@ -3,9 +3,10 @@
     <p>{{data.content}}</p>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button mat-button color="primary" mat-dialog-close="Yes" cdkFocusInitial>  Yes
+  <button mat-button color="primary" mat-dialog-close="Yes" cdkFocusInitial>  
+    Yes
   </button>
-  <button mat-button mat-button color="warn" (click)="onNoClick()">
+  <button mat-button color="warn" (click)="onNoClick()">
     No
   </button>
 </mat-dialog-actions>
