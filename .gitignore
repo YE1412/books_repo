@@ -6,4 +6,5 @@ my-angular-app/node_modules
 my-angular-app/.git
 build/dbData
 build/app
+build/nodejs/*/node_modules
 .git/COMMIT_EDITMSG
