@@ -21,7 +21,8 @@ import { ThemeToggleComponent } from '@app/theme-toggle/theme-toggle.component';
         RouterLink,
         RouterLinkActive,
         ThemeToggleComponent
-    ]
+    ],
+    host: {ngSkipHydration: 'true'},
 })
 
 export class ToolbarComponent {

@@ -84,7 +84,8 @@ export class UsersComponent implements OnInit, AfterViewInit {
           this.logout();
           this._router.navigateByUrl('/login', {state: {messages: ['User deleted so logged out !']}});
         } else {
-          window.location.reload();
+          //window.location.reload();
+          this.getAllUsers();
         }
       })
       //e.preventDefault();

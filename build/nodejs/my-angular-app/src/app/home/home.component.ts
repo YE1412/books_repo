@@ -87,8 +87,9 @@ export class HomeComponent implements OnInit, AfterViewInit{
     // console.log(`Delete click on Book id : ${id}`);
     this.bookService.deleteBook(id)
       .subscribe(() => {
-        this._router.navigate(['/home'], {state: {messages: ['Book Successfully deleted !']}});
-        window.location.reload();
+        this.getAllBooks();
+        //this._router.navigate(['/home'], {state: {messages: ['Book Successfully deleted !']}});
+        //window.location.reload();
     });        
     // window.location.reload();
     //e.preventDefault();

@@ -17,7 +17,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
         MatButtonModule,
         RouterLink,
         RouterLinkActive
-    ]
+    ],
+    host: {ngSkipHydration: 'true'},
 })
 
 export class ToolbarLoginComponent {
